@@ -1,1 +1,1 @@
-# SnakePit
+# Snake Pit
