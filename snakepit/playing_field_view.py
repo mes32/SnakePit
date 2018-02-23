@@ -18,7 +18,7 @@ class PlayingFieldView():
         screen.fill(COLOR_BLACK)
         self._render_walls(screen)
         #self._render_items(screen)
-        #self._render_enemies(screen)
+        self._render_enemies(screen)
         self._render_player(screen)
         pygame.display.flip()
 
@@ -39,6 +39,15 @@ class PlayingFieldView():
                 if x == 0 or x == width-1 or y == 0 or y == height-1:
                     rect = self._cell_at(x, y)
                     screen.blit(self.wall_image, rect)
+
+    def _render_enemies(self, screen):
+        enemies = self.field.enemies
+        for enemy in enemies:
+            position = enemy.position
+            x = position[0]
+            y = position[1]
+            rect = self._cell_at(x, y)
+            screen.blit(self.snake_image, rect)
 
     def _render_player(self, screen):
         position = self.field.player_character.position
