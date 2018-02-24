@@ -20,11 +20,9 @@ class PlayingField():
         self.lookup = PositionLookup(self.dimensions)
         self.view = PlayingFieldView(self)
 
-        self.player_character = PlayerCharacter()
-        self.player_character.copy_stats(player_stats)
         self.enemies = list()
 
-        self._init_player_character()
+        self._init_player_character(player_stats)
         self._init_enemies()
 
         # terrain
@@ -36,20 +34,18 @@ class PlayingField():
         # self._init_player()
         # self._init_enemies()
         # self._init_items()
-        
 
-    def _init_player_character(self):
+    def _init_player_character(self, player_stats):
         position = self.lookup.rand_vacant()
-        self.player_character.set_position(position)
-        self.lookup.insert(self.player_character.position, self.player_character)
+        self.player_character = PlayerCharacter(self.lookup, position)
+        self.player_character.copy_stats(player_stats)
 
     def _init_enemies(self):
         num_enemies = 20
         for e in range(0, num_enemies):
             position = self.lookup.rand_vacant()
-            enemy = Snake(position)
+            enemy = Snake(self.lookup, position)
             self.enemies.append(enemy)
-            self.lookup.insert(enemy.position, enemy)
 
     def update(self):
         self._update_player_character(self.player_character)

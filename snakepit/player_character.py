@@ -1,16 +1,17 @@
 import pygame
 
+from mappable_entity import MappableEntity
 from position import Position
 
-class PlayerCharacter():
+class PlayerCharacter(MappableEntity):
     """
     The player's character in the game.
     """
 
-    def __init__(self):
+    def __init__(self, position_lookup, position):
+        super(PlayerCharacter, self).__init__(position_lookup, position)
         self.current_hp = 0
         self.total_hp = 0
-        self.position = Position()
         # self.delta_position = Position()
 
     def copy_stats(self, stats):
