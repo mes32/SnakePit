@@ -11,7 +11,7 @@ class GameSession():
 
     def __init__(self, screen):
         player_stats = PlayerStats()
-        field = PlayingField(player_stats)
+        field = PlayingField(screen, player_stats)
         while True:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -30,4 +30,4 @@ class GameSession():
                         i = 0
                         # player.indicate_walk(1, 0)
             field.update()
-            field.display(screen)
+            field.display()

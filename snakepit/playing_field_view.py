@@ -9,20 +9,20 @@ GRID_CELL = Dimensions(64, 64)
 COLOR_BLACK = 0, 0, 0
 
 class PlayingFieldView():
-    
-    def __init__(self, field):
+    player_image = pygame.image.load("./resources/images/PlayerCharacter.png")
+    wall_image = pygame.image.load("./resources/images/Wall.png")
+    snake_image = pygame.image.load("./resources/images/Snake.png")
+
+    def __init__(self, field, screen):
         self.field = field
+        self.screen = screen
 
-        self.player_image = pygame.image.load("./resources/images/PlayerCharacter.png")
-        self.wall_image = pygame.image.load("./resources/images/Wall.png")
-        self.snake_image = pygame.image.load("./resources/images/Snake.png")
-
-    def render(self, screen):
-        screen.fill(COLOR_BLACK)
-        self._render_walls(screen)
-        #self._render_items(screen)
-        self._render_enemies(screen)
-        self._render_player(screen)
+    def render(self):
+        self.screen.fill(COLOR_BLACK)
+        self._render_terrain()
+        #self._render_items()
+        self._render_enemies()
+        self._render_player()
         pygame.display.flip()
 
     def _cell_at(self, position):
@@ -37,24 +37,20 @@ class PlayingFieldView():
         y1 = (y + 1) * height
         return pygame.Rect(x0, y0, x1, y1)
 
-    def _render_walls(self, screen):
-        dimensions = self.field.dimensions
-        width = dimensions.get_width()
-        height = dimensions.get_height()
+    def _draw_at(self, image, position):
+        rect = self._cell_at(position)
+        self.screen.blit(image, rect)
 
-        for x in range(0, width):
-            for y in range(0, height):
-                if x == 0 or x == width-1 or y == 0 or y == height-1:
-                    rect = self._cell_at(position.Position(x, y))
-                    screen.blit(self.wall_image, rect)
+    def _render_terrain(self):
+        terrain = self.field.terrain
+        for tile in terrain:
+            self._draw_at(self.wall_image, tile.position)
 
-    def _render_enemies(self, screen):
+    def _render_enemies(self):
         enemies = self.field.enemies
         for enemy in enemies:
-            rect = self._cell_at(enemy.position)
-            screen.blit(self.snake_image, rect)
+            self._draw_at(self.snake_image, enemy.position)
 
-    def _render_player(self, screen):
-        position = self.field.player_character.position
-        rect = self._cell_at(position)
-        screen.blit(self.player_image, rect)
+    def _render_player(self):
+        player = self.field.player_character
+        self._draw_at(self.player_image, player.position)

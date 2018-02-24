@@ -7,6 +7,7 @@ from playing_field_view import PlayingFieldView
 from position import Position
 from position_lookup import PositionLookup
 from snake import Snake
+from terrain import Terrain
 
 DIMENSIONS = Dimensions(10, 10)
 
@@ -15,32 +16,36 @@ class PlayingField():
     The current level of the game.
     """
 
-    def __init__(self, player_stats):
+    def __init__(self, screen, player_stats):
         self.dimensions = DIMENSIONS
         self.lookup = PositionLookup(self.dimensions)
-        self.view = PlayingFieldView(self)
+        self.view = PlayingFieldView(self, screen)
 
-        self.enemies = list()
-
-        self._init_player_character(player_stats)
+        self._init_terrain()
+        self._init_player(player_stats)
         self._init_enemies()
-
-        # terrain
-        # player
-        # enemies
-        # items
-        
-        # self._init_terrain()
-        # self._init_player()
-        # self._init_enemies()
         # self._init_items()
 
-    def _init_player_character(self, player_stats):
+    def _init_terrain(self):
+        self.terrain = list()
+        width = self.dimensions.get_width()
+        height = self.dimensions.get_height()
+
+        for x in range(0, width):
+            for y in range(0, height):
+                if x == 0 or x == width-1 or y == 0 or y == height-1:
+                    position = Position(x, y)
+                    wall_tile = Terrain(self.lookup, position)
+                    self.terrain.append(wall_tile)
+
+    def _init_player(self, player_stats):
         position = self.lookup.rand_vacant()
         self.player_character = PlayerCharacter(self.lookup, position)
         self.player_character.copy_stats(player_stats)
 
     def _init_enemies(self):
+        self.enemies = list()
+
         num_enemies = 20
         for e in range(0, num_enemies):
             position = self.lookup.rand_vacant()
@@ -68,5 +73,5 @@ class PlayingField():
         #     return True
         return False
 
-    def display(self, screen):
-        self.view.render(screen)
+    def display(self):
+        self.view.render()
