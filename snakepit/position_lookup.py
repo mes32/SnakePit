@@ -1,4 +1,6 @@
+import dimensions
 import pygame
+import random
 
 from position import Position
 
@@ -7,7 +9,8 @@ class PositionLookup():
     A dictionary of all items inside the PlayingField
     """
 
-    def __init__(self):
+    def __init__(self, dimensions):
+        self.dimensions = dimensions
         self.table = dict()
 
     def item_at(self, position):
@@ -39,3 +42,13 @@ class PositionLookup():
             return True
         else:
             return False
+
+    def rand_vacant(self):
+            max_x = self.dimensions.get_width() - 1
+            max_y = self.dimensions.get_height() - 1
+            while True:
+                x = random.randint(0, max_x)
+                y = random.randint(0, max_y)
+                position = Position(x, y)
+                if self.is_vacant(position):
+                    return position

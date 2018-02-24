@@ -7,7 +7,7 @@ class Snake():
     The basic snake enemies.
     """
 
-    def __init__(self, x, y):
+    def __init__(self, position):
         self.current_hp = 1
         self.total_hp = 1
-        self.position = Position(x, y)
+        self.position = position

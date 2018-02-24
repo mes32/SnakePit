@@ -13,8 +13,8 @@ class PlayerCharacter():
         self.position = Position()
         # self.delta_position = Position()
 
-    def set_position(self, x, y):
-        self.position.set(x, y)
+    def set_position(self, position):
+        self.position = position
 
     # def indicate_walk(self, delta_x, delta_y):
     #     self.delta_position = Position(delta_x, delta_y)
