@@ -5,9 +5,9 @@ class Position():
     A position on the playing field
     """
 
-    def __init__(self, x=None, y=None):
-        self.x = x
-        self.y = y
+    def __init__(self, x=0, y=0):
+        self.x = int(x)
+        self.y = int(y)
 
     def get_x(self):
         return self.x
@@ -23,6 +23,12 @@ class Position():
         self.y = y
 
     def delta_position(self, delta):
-        self.x = self.x + delta.get_x()
-        self.y = self.y + delta.get_y()
+        if delta == None:
+            x = self.x
+            y = self.y
+            return Position(x, y)
+        else:
+            x = self.x + delta.get_x()
+            y = self.y + delta.get_y()
+            return Position(x, y)
         

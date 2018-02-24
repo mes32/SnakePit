@@ -11,5 +11,9 @@ class MappableEntity():
         self.set_position(position)
 
     def set_position(self, position):
-        self.position = position
         self.position_lookup.insert(position, self)
+        self.position = position
+
+    def move_position(self, position):
+        self.position_lookup.move(self.position, position)
+        self.position = position

@@ -52,5 +52,5 @@ class PlayingFieldView():
             self._draw_at(self.snake_image, enemy.position)
 
     def _render_player(self):
-        player = self.field.player_character
+        player = self.field.player
         self._draw_at(self.player_image, player.position)

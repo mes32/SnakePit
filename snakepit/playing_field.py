@@ -40,8 +40,8 @@ class PlayingField():
 
     def _init_player(self, player_stats):
         position = self.lookup.rand_vacant()
-        self.player_character = PlayerCharacter(self.lookup, position)
-        self.player_character.copy_stats(player_stats)
+        self.player = PlayerCharacter(self.lookup, position)
+        self.player.copy_stats(player_stats)
 
     def _init_enemies(self):
         self.enemies = list()
@@ -53,25 +53,16 @@ class PlayingField():
             self.enemies.append(enemy)
 
     def update(self):
-        self._update_player_character(self.player_character)
+        self._update_player_character()
         #self._update_enemies()
 
-    def _update_player_character(self, player):
+    def _update_player_character(self):
+        player = self.player
         position = player.position
-        # new_position = position.delta_position(player.delta_position)
+        new_position = position.delta_position(player.delta_position)
 
-        # if self._is_wall(new_position):
-        #     return
-        # else:
-        #     player.finalize_walk()
-
-    def _is_wall(self, position):
-        # x = position.get_x()
-        # y = position.get_y()
-
-        # if x == 0 or x == self.dimensions.get_width() - 1 or y == 0 or y == self.dimensions.get_height() - 1:
-        #     return True
-        return False
+        if self.lookup.is_vacant(new_position):
+            player.walk()
 
     def display(self):
         self.view.render()

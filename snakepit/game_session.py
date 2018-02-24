@@ -3,6 +3,7 @@ import pygame
 
 from player_stats import PlayerStats
 from playing_field import PlayingField
+from position import Position
 
 class GameSession():
     """
@@ -12,22 +13,19 @@ class GameSession():
     def __init__(self, screen):
         player_stats = PlayerStats()
         field = PlayingField(screen, player_stats)
+        player = field.player
         while True:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     sys.exit()
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_UP:
-                        i = 0
-                        # player.indicate_walk(0, -1)
+                        player.plan_walk(Position(y=-1))
                     elif event.key == pygame.K_DOWN:
-                        i = 0
-                        # player.indicate_walk(0, 1)
+                        player.plan_walk(Position(y=1))
                     elif event.key == pygame.K_LEFT:
-                        i = 0
-                        # player.indicate_walk(-1, 0)
+                        player.plan_walk(Position(x=-1))
                     elif event.key == pygame.K_RIGHT:
-                        i = 0
-                        # player.indicate_walk(1, 0)
+                        player.plan_walk(Position(x=1))
             field.update()
             field.display()
