@@ -3,7 +3,9 @@ import position
 import playing_field
 import player_character
 
-GRID_CELL = width, height = 64, 64
+from dimensions import Dimensions
+
+GRID_CELL = Dimensions(64, 64)
 COLOR_BLACK = 0, 0, 0
 
 class PlayingFieldView():
@@ -26,16 +28,19 @@ class PlayingFieldView():
     def _cell_at(self, position):
         x = position.get_x()
         y = position.get_y()
-        x0 = x * GRID_CELL[0]
-        y0 = y * GRID_CELL[1]
-        x1 = (x + 1) * GRID_CELL[0]
-        y1 = (y + 1) * GRID_CELL[1]
+        width = GRID_CELL.get_width()
+        height = GRID_CELL.get_height()
+
+        x0 = x * width
+        y0 = y * height
+        x1 = (x + 1) * width
+        y1 = (y + 1) * height
         return pygame.Rect(x0, y0, x1, y1)
 
     def _render_walls(self, screen):
-        dim = self.field.dimensions
-        width = dim[0]
-        height = dim[1]
+        dimensions = self.field.dimensions
+        width = dimensions.get_width()
+        height = dimensions.get_height()
 
         for x in range(0, width):
             for y in range(0, height):

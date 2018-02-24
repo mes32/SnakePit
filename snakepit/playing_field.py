@@ -1,11 +1,12 @@
 import pygame
 import random
 
+from dimensions import Dimensions
 from player_character import PlayerCharacter
 from playing_field_view import PlayingFieldView
 from snake import Snake
 
-DIMENSIONS = width, height = 10, 10
+DIMENSIONS = Dimensions(10, 10)
 
 class PlayingField():
     """
@@ -60,7 +61,7 @@ class PlayingField():
         # x = position.get_x()
         # y = position.get_y()
 
-        # if x == 0 or x == self.dimensions[0] - 1 or y == 0 or y == self.dimensions[1] - 1:
+        # if x == 0 or x == self.dimensions.get_width() - 1 or y == 0 or y == self.dimensions.get_height() - 1:
         #     return True
         return False
 
