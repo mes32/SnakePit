@@ -1,4 +1,5 @@
 import pygame
+import position
 import playing_field
 import player_character
 
@@ -22,7 +23,9 @@ class PlayingFieldView():
         self._render_player(screen)
         pygame.display.flip()
 
-    def _cell_at(self, x, y):
+    def _cell_at(self, position):
+        x = position.get_x()
+        y = position.get_y()
         x0 = x * GRID_CELL[0]
         y0 = y * GRID_CELL[1]
         x1 = (x + 1) * GRID_CELL[0]
@@ -37,21 +40,16 @@ class PlayingFieldView():
         for x in range(0, width):
             for y in range(0, height):
                 if x == 0 or x == width-1 or y == 0 or y == height-1:
-                    rect = self._cell_at(x, y)
+                    rect = self._cell_at(position.Position(x, y))
                     screen.blit(self.wall_image, rect)
 
     def _render_enemies(self, screen):
         enemies = self.field.enemies
         for enemy in enemies:
-            position = enemy.position
-            x = position[0]
-            y = position[1]
-            rect = self._cell_at(x, y)
+            rect = self._cell_at(enemy.position)
             screen.blit(self.snake_image, rect)
 
     def _render_player(self, screen):
         position = self.field.player_character.position
-        x = position[0]
-        y = position[1]
-        rect = self._cell_at(x, y)
+        rect = self._cell_at(position)
         screen.blit(self.player_image, rect)

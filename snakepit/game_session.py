@@ -18,12 +18,16 @@ class GameSession():
                     sys.exit()
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_UP:
-                        player.indicate_walk(0, -1)
+                        i = 0
+                        # player.indicate_walk(0, -1)
                     elif event.key == pygame.K_DOWN:
-                        player.indicate_walk(0, 1)
+                        i = 0
+                        # player.indicate_walk(0, 1)
                     elif event.key == pygame.K_LEFT:
-                        player.indicate_walk(-1, 0)
+                        i = 0
+                        # player.indicate_walk(-1, 0)
                     elif event.key == pygame.K_RIGHT:
-                        player.indicate_walk(1, 0)
+                        i = 0
+                        # player.indicate_walk(1, 0)
             field.update()
             field.display(screen)
