@@ -8,10 +8,14 @@ class PlayerCharacter():
     """
 
     def __init__(self):
-        self.current_hp = 5
-        self.total_hp = 5
+        self.current_hp = 0
+        self.total_hp = 0
         self.position = Position()
         # self.delta_position = Position()
+
+    def copy_stats(self, stats):
+        self.current_hp = int(stats.current_hp)
+        self.total_hp = int(stats.total_hp)
 
     def set_position(self, position):
         self.position = position

@@ -1,7 +1,7 @@
 import sys
 import pygame
 
-from player_character import PlayerCharacter
+from player_stats import PlayerStats
 from playing_field import PlayingField
 
 class GameSession():
@@ -10,9 +10,9 @@ class GameSession():
     """
 
     def __init__(self, screen):
-        player = PlayerCharacter()
-        field = PlayingField(player)
-        while 1:
+        player_stats = PlayerStats()
+        field = PlayingField(player_stats)
+        while True:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     sys.exit()

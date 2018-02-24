@@ -15,16 +15,27 @@ class PlayingField():
     The current level of the game.
     """
 
-    def __init__(self, player_character):
+    def __init__(self, player_stats):
         self.dimensions = DIMENSIONS
         self.lookup = PositionLookup(self.dimensions)
         self.view = PlayingFieldView(self)
 
-        self.player_character = player_character
+        self.player_character = PlayerCharacter()
+        self.player_character.copy_stats(player_stats)
         self.enemies = list()
 
         self._init_player_character()
         self._init_enemies()
+
+        # terrain
+        # player
+        # enemies
+        # items
+        
+        # self._init_terrain()
+        # self._init_player()
+        # self._init_enemies()
+        # self._init_items()
         
 
     def _init_player_character(self):
