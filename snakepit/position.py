@@ -16,7 +16,7 @@ class Position():
         return self.y
 
     def get_tuple(self):
-        return (x, y)
+        return (self.x, self.y)
 
     def set(self, x, y):
         self.x = x

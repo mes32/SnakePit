@@ -4,6 +4,8 @@ import random
 from dimensions import Dimensions
 from player_character import PlayerCharacter
 from playing_field_view import PlayingFieldView
+from position import Position
+from position_lookup import PositionLookup
 from snake import Snake
 
 DIMENSIONS = Dimensions(10, 10)
@@ -15,7 +17,7 @@ class PlayingField():
 
     def __init__(self, player_character):
         self.dimensions = DIMENSIONS
-        self.all_objects = dict()
+        self.lookup = PositionLookup()
         self.view = PlayingFieldView(self)
 
         self.player_character = player_character
@@ -30,19 +32,19 @@ class PlayingField():
         y = random.randint(1, 8)
         self.player_character.set_position(x, y)
 
+        self.lookup.insert(self.player_character.position, self.player_character)
+
     def _init_enemies(self):
-        num_enemies = 2
+        num_enemies = 20
         for e in range(0, num_enemies):
             enemy = None
             while enemy == None:
                 x = random.randint(1, 8)
                 y = random.randint(1, 8)
-                player_position = self.player_character.position
-                player_x = player_position.get_x()
-                player_y = player_position.get_y()
-                if x != player_x or y != player_y:
+                if self.lookup.is_vacant(Position(x, y)):
                     enemy = Snake(x, y)
             self.enemies.append(enemy)
+            self.lookup.insert(enemy.position, enemy)
 
     def update(self):
         self._update_player_character(self.player_character)
