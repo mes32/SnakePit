@@ -6,14 +6,14 @@ from position import Position
 
 class PositionLookup():
     """
-    A dictionary of all items inside the PlayingField
+    A dictionary of all MappableEntities inside the PlayingField
     """
 
     def __init__(self, dimensions):
         self.dimensions = dimensions
         self.table = dict()
 
-    def item_at(self, position):
+    def entity_at(self, position):
         tuple = position.get_tuple()
         if not tuple in self.table:
             return None
@@ -28,17 +28,19 @@ class PositionLookup():
         tuple = position.get_tuple()
         del self.table[tuple]
 
+    def remove(self, entity):
+        self.delete(entity.position)
+
     def move(self, position_start, position_end):
-        item = self.item_at(position_start)
-        if item == None:
+        entity_to_move = self.entity_at(position_start)
+        if entity_to_move == None:
             return False
         self.delete(position_start)
-        self.insert(position_end, item)
+        self.insert(position_end, entity_to_move)
         return True
 
     def is_vacant(self, position):
-        tuple = position.get_tuple()
-        if self.item_at(position) == None:
+        if self.entity_at(position) == None:
             return True
         else:
             return False

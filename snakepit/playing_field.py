@@ -46,7 +46,7 @@ class PlayingField():
     def _init_enemies(self):
         self.enemies = list()
 
-        num_enemies = 20
+        num_enemies = 3
         for e in range(0, num_enemies):
             position = self.lookup.rand_vacant()
             enemy = Snake(self.lookup, position)
@@ -54,15 +54,25 @@ class PlayingField():
 
     def update(self):
         self._update_player_character()
-        #self._update_enemies()
+        self._update_enemies()
 
     def _update_player_character(self):
         player = self.player
         position = player.position
         new_position = position.delta_position(player.delta_position)
 
-        if self.lookup.is_vacant(new_position):
+        entity = self.lookup.entity_at(new_position)
+        if entity is None:
             player.walk()
+        elif type(entity) is Snake:
+            player.attack(entity)
+            player.reset()
+
+    def _update_enemies(self):
+        for enemy in self.enemies:
+            if enemy.is_dead():
+                self.enemies.remove(enemy)
+                self.lookup.remove(enemy)
 
     def display(self):
         self.view.render()

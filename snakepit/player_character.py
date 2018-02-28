@@ -2,6 +2,7 @@ import pygame
 
 from mappable_entity import MappableEntity
 from position import Position
+from snake import Snake
 
 class PlayerCharacter(MappableEntity):
     """
@@ -25,4 +26,12 @@ class PlayerCharacter(MappableEntity):
         new_position = self.position.delta_position(self.delta_position)
         self.move_position(new_position)
         self.delta_position = Position()
+
+    def reset(self):
+        self.delta_position = Position()
+
+    def attack(self, enemy):
+        damage = 1
+        enemy.take_damage(damage)
+
 
