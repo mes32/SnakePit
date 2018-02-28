@@ -46,7 +46,7 @@ class PlayingField():
     def _init_enemies(self):
         self.enemies = list()
 
-        num_enemies = 3
+        num_enemies = 4
         for e in range(0, num_enemies):
             position = self.lookup.rand_vacant()
             enemy = Snake(self.lookup, position)
@@ -73,6 +73,9 @@ class PlayingField():
             if enemy.is_dead():
                 self.enemies.remove(enemy)
                 self.lookup.remove(enemy)
+
+        for enemy in self.enemies:
+            enemy.wander()
 
     def display(self):
         self.view.render()

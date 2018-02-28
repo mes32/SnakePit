@@ -15,6 +15,7 @@ class GameSession():
         field = PlayingField(screen, player_stats)
         player = field.player
         while True:
+            field.display()
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     sys.exit()
@@ -27,5 +28,5 @@ class GameSession():
                         player.plan_walk(Position(x=-1))
                     elif event.key == pygame.K_RIGHT:
                         player.plan_walk(Position(x=1))
-            field.update()
-            field.display()
+                    field.update()
+                    field.display()
