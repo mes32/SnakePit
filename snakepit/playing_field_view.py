@@ -5,7 +5,7 @@ import player_character
 
 from dimensions import Dimensions
 
-DISPLAY_BAR_HEIGHT = 20
+DISPLAY_BAR_CELL = Dimensions(20, 20)
 GRID_CELL = Dimensions(64, 64)
 COLOR_BLACK = 0, 0, 0
 
@@ -14,6 +14,8 @@ class PlayingFieldView():
     wall_image = pygame.image.load("./resources/images/Wall.png")
     snake_image = pygame.image.load("./resources/images/Snake.png")
     heart_image = pygame.image.load("./resources/images/Heart.png")
+    display_heart_full = pygame.image.load("./resources/images/IndicatorHeart_Full.png")
+    display_heart_empty = pygame.image.load("./resources/images/IndicatorHeart_Empty.png")
 
     def __init__(self, field, screen):
         self.field = field
@@ -25,18 +27,20 @@ class PlayingFieldView():
         self._render_items()
         self._render_enemies()
         self._render_player()
+        self._render_display_bar()
         pygame.display.flip()
 
     def _cell_at(self, position):
+        offset_vertical = DISPLAY_BAR_CELL.get_height()
         x = position.get_x()
         y = position.get_y()
         width = GRID_CELL.get_width()
         height = GRID_CELL.get_height()
 
         x0 = x * width
-        y0 = y * height + DISPLAY_BAR_HEIGHT
-        x1 = (x + 1) * width
-        y1 = (y + 1) * height + DISPLAY_BAR_HEIGHT
+        y0 = y * height + offset_vertical
+        x1 = x0 + width
+        y1 = y0 + height
         return pygame.Rect(x0, y0, x1, y1)
 
     def _draw_at(self, image, position):
@@ -61,3 +65,29 @@ class PlayingFieldView():
     def _render_player(self):
         player = self.field.player
         self._draw_at(self.player_image, player.position)
+
+    def _render_display_bar(self):
+        total_hearts = self.field.player.total_hp
+        full_hearts = self.field.player.current_hp
+        empty_hearts = total_hearts - full_hearts
+
+        for f in range(0, full_hearts):
+            self._display_bar(self.display_heart_full, f, total_hearts)
+
+        for e in range(0, empty_hearts):
+            self._display_bar(self.display_heart_empty, e + full_hearts, total_hearts)
+
+    def _display_bar(self, image, slot, total_slots):
+        height = DISPLAY_BAR_CELL.get_height()
+        width = DISPLAY_BAR_CELL.get_width()
+        screen_width = GRID_CELL.get_width() * self.field.dimensions.get_width()
+        offset_horizontal = 60
+        back_slot = total_slots - slot - 1
+
+        x0 = screen_width - (back_slot * width) - offset_horizontal
+        y0 = 0
+        x1 = x0 + width
+        y1 = height
+        rect = pygame.Rect(x0, y0, x1, y1)
+
+        self.screen.blit(image, rect)
