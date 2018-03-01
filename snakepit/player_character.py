@@ -11,8 +11,6 @@ class PlayerCharacter(MappableEntity):
 
     def __init__(self, position_lookup, position):
         super(PlayerCharacter, self).__init__(position_lookup, position)
-        self.current_hp = 0
-        self.total_hp = 0
         self.delta_position = Position()
 
     def copy_stats(self, stats):
@@ -33,5 +31,18 @@ class PlayerCharacter(MappableEntity):
     def attack(self, enemy):
         damage = 1
         enemy.take_damage(damage)
+        self.current_hp = self.current_hp - 1
+        if self.current_hp < 0:
+            self.current_hp = 0
+
+        print("HP: %s / %s" % (self.current_hp, self.total_hp))
+
+    def pickup(self, item):
+        item.consume()
+        self.current_hp = self.current_hp + 1
+        if self.current_hp > self.total_hp:
+            self.current_hp = self.total_hp
+
+        print("HP: %s / %s" % (self.current_hp, self.total_hp))
 
 

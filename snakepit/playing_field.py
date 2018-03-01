@@ -2,6 +2,7 @@ import pygame
 import random
 
 from dimensions import Dimensions
+from heart import Heart
 from player_character import PlayerCharacter
 from playing_field_view import PlayingFieldView
 from position import Position
@@ -24,7 +25,7 @@ class PlayingField():
         self._init_terrain()
         self._init_player(player_stats)
         self._init_enemies()
-        # self._init_items()
+        self._init_items()
 
     def _init_terrain(self):
         self.terrain = list()
@@ -52,9 +53,27 @@ class PlayingField():
             enemy = Snake(self.lookup, position)
             self.enemies.append(enemy)
 
+    def _init_items(self):
+        self.items = list()
+
+        num_items = 3
+        for i in range(0, num_items):
+            position = self.lookup.rand_vacant()
+            item = Heart(self.lookup, position)
+            self.items.append(item)
+
     def update(self):
+        self._update_items()
         self._update_player_character()
         self._update_enemies()
+
+    def _update_items(self):
+        items = self.items
+        lookup = self.lookup
+        for i in items:
+            if i.is_consumed == True:
+                items.remove(i)
+                lookup.remove(i)
 
     def _update_player_character(self):
         player = self.player
@@ -63,6 +82,9 @@ class PlayingField():
 
         entity = self.lookup.entity_at(new_position)
         if entity is None:
+            player.walk()
+        elif type(entity) is Heart:
+            player.pickup(entity)
             player.walk()
         elif type(entity) is Snake:
             player.attack(entity)
