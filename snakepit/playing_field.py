@@ -36,7 +36,7 @@ class PlayingField():
         for x in range(0, width):
             for y in range(0, height):
                 if x == 0 or x == width-1 or y == 0 or y == height-1:
-                    position = Position(x, y)
+                    position = Position(self.lookup, x, y)
                     wall_tile = Terrain(self.lookup, position)
                     self.terrain.append(wall_tile)
 
@@ -79,7 +79,9 @@ class PlayingField():
     def _update_player_character(self):
         player = self.player
         position = player.position
-        new_position = position.delta_position(player.delta_position)
+        dx = player.delta_position.get_x()
+        dy = player.delta_position.get_y()
+        new_position = position.delta(dx, dy)
 
         entity = self.lookup.entity_at(new_position)
         if entity is None:

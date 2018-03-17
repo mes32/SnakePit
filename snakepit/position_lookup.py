@@ -2,7 +2,7 @@ import dimensions
 import pygame
 import random
 
-from position import Position
+import position
 
 class PositionLookup():
     """
@@ -51,6 +51,6 @@ class PositionLookup():
             while True:
                 x = random.randint(0, max_x)
                 y = random.randint(0, max_y)
-                position = Position(x, y)
-                if self.is_vacant(position):
-                    return position
+                test_position = position.Position(self, x, y)
+                if self.is_vacant(test_position):
+                    return test_position

@@ -31,12 +31,12 @@ class GameLoop():
                         break
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_UP:
-                        player.plan_walk(Position(y=-1))
+                        player.plan_walk(y=-1)
                     elif event.key == pygame.K_DOWN:
-                        player.plan_walk(Position(y=1))
+                        player.plan_walk(y=1)
                     elif event.key == pygame.K_LEFT:
-                        player.plan_walk(Position(x=-1))
+                        player.plan_walk(x=-1)
                     elif event.key == pygame.K_RIGHT:
-                        player.plan_walk(Position(x=1))
+                        player.plan_walk(x=1)
                     field.update()
                     field.display()

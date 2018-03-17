@@ -11,22 +11,25 @@ class PlayerCharacter(MappableEntity):
 
     def __init__(self, position_lookup, position):
         super(PlayerCharacter, self).__init__(position_lookup, position)
-        self.delta_position = Position()
+        self.position_lookup = position_lookup
+        self.delta_position = Position(self.position_lookup, 0, 0)
 
     def copy_stats(self, stats):
         self.current_hp = int(stats.current_hp)
         self.total_hp = int(stats.total_hp)
 
-    def plan_walk(self, delta_position):
-        self.delta_position = delta_position
+    def plan_walk(self, x=0, y=0):
+        self.delta_position = Position(self.position_lookup, x, y)
 
     def walk(self):
-        new_position = self.position.delta_position(self.delta_position)
+        dx = self.delta_position.get_x()
+        dy = self.delta_position.get_y()
+        new_position = self.position.delta(dx, dy)
         self.move_position(new_position)
-        self.delta_position = Position()
+        self.delta_position = Position(self.position_lookup, 0, 0)
 
     def reset(self):
-        self.delta_position = Position()
+        self.delta_position = Position(self.position_lookup, 0, 0)
 
     def has_died(self):
         if self.current_hp <= 0:

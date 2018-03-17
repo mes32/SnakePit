@@ -17,10 +17,10 @@ class Snake(MappableEntity):
         current_position = self.position
         p_move = 0.3
         if (random.random() <= p_move):
-            pos_up = current_position.delta_position(Position(y=-1))
-            pos_down = current_position.delta_position(Position(y=1))
-            pos_left = current_position.delta_position(Position(x=-1))
-            pos_right = current_position.delta_position(Position(x=1))
+            pos_up = current_position.delta(y=-1)
+            pos_down = current_position.delta(y=1)
+            pos_left = current_position.delta(x=-1)
+            pos_right = current_position.delta(x=1)
 
             available_positions = list()
             if self.position_lookup.is_vacant(pos_up):
