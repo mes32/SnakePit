@@ -25,15 +25,18 @@ class PositionLookup():
         self.table[tuple] = item
 
     def delete(self, position):
+        if self.is_vacant(position):
+            return False
         tuple = position.get_tuple()
         del self.table[tuple]
+        return True
 
     def remove(self, entity):
-        self.delete(entity.position)
+        return self.delete(entity.position)
 
     def move(self, position_start, position_end):
         entity_to_move = self.entity_at(position_start)
-        if entity_to_move == None:
+        if entity_to_move == None or not self.is_vacant(position_end) or self.is_vacant(position_start):
             return False
         self.delete(position_start)
         self.insert(position_end, entity_to_move)
