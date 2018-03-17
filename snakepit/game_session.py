@@ -22,7 +22,7 @@ class GameSession():
                     sys.exit()
                 elif player.has_died():
                     menu = GameOverMenu(screen, field)
-                    quit = menu.show()
+                    quit = menu.get_choice()
                     if quit:
                         sys.exit()
                     else:

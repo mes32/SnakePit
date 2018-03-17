@@ -24,7 +24,7 @@ class GameOverMenu():
         screen.blit(text_render, ((screen_width - width)/2.0, (screen_height - height)/2.0))
         pygame.display.flip()
     
-    def show(self):
+    def get_choice(self):
         while True:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
