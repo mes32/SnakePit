@@ -2,9 +2,9 @@ import pygame
 import random
 
 from dimensions import Dimensions
+from game_level_view import GameLevelView
 from heart import Heart
 from player_character import PlayerCharacter
-from playing_field_view import PlayingFieldView
 from position import Position
 from position_lookup import PositionLookup
 from snake import Snake
@@ -20,7 +20,7 @@ class GameLevel():
     def __init__(self, screen, player_stats):
         self.dimensions = self.DIMENSIONS
         self.lookup = PositionLookup(self.dimensions)
-        self.view = PlayingFieldView(self, screen)
+        self.view = GameLevelView(self, screen)
         self.dim = False
 
         self._init_terrain()

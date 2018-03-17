@@ -5,7 +5,7 @@ import player_character
 
 from dimensions import Dimensions
 
-class PlayingFieldView():
+class GameLevelView():
 
     DISPLAY_BAR_CELL = Dimensions(20, 20)
     GRID_CELL = Dimensions(64, 64)
