@@ -1,16 +1,17 @@
 import pygame
 import position
-import playing_field
+import game_level
 import player_character
 
 from dimensions import Dimensions
 
-DISPLAY_BAR_CELL = Dimensions(20, 20)
-GRID_CELL = Dimensions(64, 64)
-COLOR_BLACK = 0, 0, 0
-COLOR_DIM = (255, 0, 0, 128)
-
 class PlayingFieldView():
+
+    DISPLAY_BAR_CELL = Dimensions(20, 20)
+    GRID_CELL = Dimensions(64, 64)
+    COLOR_BLACK = 0, 0, 0
+    COLOR_DIM = (255, 0, 0, 128)
+
     player_image = pygame.image.load("./resources/images/PlayerCharacter.png")
     wall_image = pygame.image.load("./resources/images/Wall.png")
     snake_image = pygame.image.load("./resources/images/Snake.png")
@@ -19,14 +20,20 @@ class PlayingFieldView():
     display_heart_empty = pygame.image.load("./resources/images/IndicatorHeart_Empty.png")
 
     def __init__(self, field, screen):
+        width = field.dimensions.get_width()
+        height = field.dimensions.get_height()
+        width_pixels = width * self.GRID_CELL.get_width()
+        height_pixels = height * self.GRID_CELL.get_height() + self.DISPLAY_BAR_CELL.get_height()
         self.field = field
+        screen = pygame.display.set_mode((width_pixels, height_pixels))
         self.screen = screen
 
+
     def render(self):
-        self.screen.fill(COLOR_BLACK)
+        self.screen.fill(self.COLOR_BLACK)
         self._render_terrain()
-        self._render_items()
-        self._render_enemies()
+        # self._render_items()
+        # self._render_enemies()
         self._render_player()
         self._render_display_bar()
         if self.field.dim:
@@ -34,11 +41,11 @@ class PlayingFieldView():
         pygame.display.flip()
 
     def _cell_at(self, position):
-        offset_vertical = DISPLAY_BAR_CELL.get_height()
+        offset_vertical = self.DISPLAY_BAR_CELL.get_height()
         x = position.get_x()
         y = position.get_y()
-        width = GRID_CELL.get_width()
-        height = GRID_CELL.get_height()
+        width = self.GRID_CELL.get_width()
+        height = self.GRID_CELL.get_height()
 
         x0 = x * width
         y0 = y * height + offset_vertical
@@ -81,9 +88,9 @@ class PlayingFieldView():
             self._display_bar(self.display_heart_empty, e + full_hearts, total_hearts)
 
     def _display_bar(self, image, slot, total_slots):
-        height = DISPLAY_BAR_CELL.get_height()
-        width = DISPLAY_BAR_CELL.get_width()
-        screen_width = GRID_CELL.get_width() * self.field.dimensions.get_width()
+        height = self.DISPLAY_BAR_CELL.get_height()
+        width = self.DISPLAY_BAR_CELL.get_width()
+        screen_width = self.GRID_CELL.get_width() * self.field.dimensions.get_width()
         offset_horizontal = 60
         back_slot = total_slots - slot - 1
 

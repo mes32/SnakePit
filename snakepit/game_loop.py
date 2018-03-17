@@ -1,9 +1,10 @@
 import sys
 import pygame
 
+import game_level
+
 from game_over_menu import GameOverMenu
 from player_stats import PlayerStats
-from playing_field import PlayingField
 from position import Position
 
 class GameLoop():
@@ -13,21 +14,21 @@ class GameLoop():
 
     def __init__(self, screen):
         player_stats = PlayerStats()
-        field = PlayingField(screen, player_stats)
-        player = field.player
+        level = game_level.GameLevel(screen, player_stats)
+        player = level.player
         while True:
-            field.display()
+            level.display()
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     sys.exit()
                 elif player.has_died():
-                    menu = GameOverMenu(screen, field)
+                    menu = GameOverMenu(screen, level)
                     quit = menu.get_choice()
                     if quit:
                         sys.exit()
                     else:
-                        field = PlayingField(screen, player_stats)
-                        player = field.player
+                        level = PlayingField(screen, player_stats)
+                        player = level.player
                         break
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_UP:
@@ -38,5 +39,5 @@ class GameLoop():
                         player.plan_walk(x=-1)
                     elif event.key == pygame.K_RIGHT:
                         player.plan_walk(x=1)
-                    field.update()
-                    field.display()
+                    level.update()
+                    level.display()

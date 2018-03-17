@@ -10,23 +10,23 @@ from position_lookup import PositionLookup
 from snake import Snake
 from terrain import Terrain
 
-DIMENSIONS = Dimensions(10, 10)
-
-class PlayingField():
+class GameLevel():
     """
     The current level of the game.
     """
 
+    DIMENSIONS = Dimensions(6, 6)
+
     def __init__(self, screen, player_stats):
-        self.dimensions = DIMENSIONS
+        self.dimensions = self.DIMENSIONS
         self.lookup = PositionLookup(self.dimensions)
         self.view = PlayingFieldView(self, screen)
         self.dim = False
 
         self._init_terrain()
         self._init_player(player_stats)
-        self._init_enemies()
-        self._init_items()
+        # self._init_enemies()
+        # self._init_items()
 
     def _init_terrain(self):
         self.terrain = list()
@@ -45,28 +45,30 @@ class PlayingField():
         self.player = PlayerCharacter(self.lookup, position)
         self.player.copy_stats(player_stats)
 
-    def _init_enemies(self):
-        self.enemies = list()
+    # def _init_enemies(self):
+    #     self.enemies = list()
 
-        num_enemies = 4
-        for e in range(0, num_enemies):
-            position = self.lookup.rand_vacant()
-            enemy = Snake(self.lookup, position)
-            self.enemies.append(enemy)
+    #     num_enemies = 4
+    #     num_enemies = 0
+    #     for e in range(0, num_enemies):
+    #         position = self.lookup.rand_vacant()
+    #         enemy = Snake(self.lookup, position)
+    #         self.enemies.append(enemy)
 
-    def _init_items(self):
-        self.items = list()
+    # def _init_items(self):
+    #     self.items = list()
 
-        num_items = 3
-        for i in range(0, num_items):
-            position = self.lookup.rand_vacant()
-            item = Heart(self.lookup, position)
-            self.items.append(item)
+    #     num_items = 3
+    #     num_items = 0
+    #     for i in range(0, num_items):
+    #         position = self.lookup.rand_vacant()
+    #         item = Heart(self.lookup, position)
+    #         self.items.append(item)
 
     def update(self):
-        self._update_items()
+        # self._update_items()
         self._update_player_character()
-        self._update_enemies()
+        # self._update_enemies()
 
     def _update_items(self):
         items = self.items
