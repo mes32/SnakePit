@@ -28,6 +28,12 @@ class PlayerCharacter(MappableEntity):
     def reset(self):
         self.delta_position = Position()
 
+    def has_died(self):
+        if self.current_hp <= 0:
+            return True
+        else:
+            return False
+
     def attack(self, enemy):
         damage = 1
         enemy.take_damage(damage)
@@ -35,14 +41,8 @@ class PlayerCharacter(MappableEntity):
         if self.current_hp < 0:
             self.current_hp = 0
 
-        print("HP: %s / %s" % (self.current_hp, self.total_hp))
-
     def pickup(self, item):
         item.consume()
         self.current_hp = self.current_hp + 1
         if self.current_hp > self.total_hp:
             self.current_hp = self.total_hp
-
-        print("HP: %s / %s" % (self.current_hp, self.total_hp))
-
-

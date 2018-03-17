@@ -21,6 +21,7 @@ class PlayingField():
         self.dimensions = DIMENSIONS
         self.lookup = PositionLookup(self.dimensions)
         self.view = PlayingFieldView(self, screen)
+        self.dim = False
 
         self._init_terrain()
         self._init_player(player_stats)
@@ -98,6 +99,9 @@ class PlayingField():
 
         for enemy in self.enemies:
             enemy.wander()
+
+    def set_dim(self, dim):
+        self.dim = dim
 
     def display(self):
         self.view.render()

@@ -8,6 +8,7 @@ from dimensions import Dimensions
 DISPLAY_BAR_CELL = Dimensions(20, 20)
 GRID_CELL = Dimensions(64, 64)
 COLOR_BLACK = 0, 0, 0
+COLOR_DIM = (255, 0, 0, 128)
 
 class PlayingFieldView():
     player_image = pygame.image.load("./resources/images/PlayerCharacter.png")
@@ -28,6 +29,8 @@ class PlayingFieldView():
         self._render_enemies()
         self._render_player()
         self._render_display_bar()
+        if self.field.dim:
+            self._render_dim_overlay()
         pygame.display.flip()
 
     def _cell_at(self, position):
@@ -91,3 +94,10 @@ class PlayingFieldView():
         rect = pygame.Rect(x0, y0, x1, y1)
 
         self.screen.blit(image, rect)
+
+    def _render_dim_overlay(self):
+        width = self.screen.get_width()
+        height = self.screen.get_height()
+        overlay = pygame.Surface((width, height), pygame.SRCALPHA)
+        overlay.fill((0, 0, 0, 160))
+        self.screen.blit(overlay, (0,0))
