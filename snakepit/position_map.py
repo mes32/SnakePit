@@ -4,9 +4,9 @@ import random
 
 import position
 
-class PositionLookup():
+class PositionMap():
     """
-    A dictionary of all MappableEntities inside the PlayingField
+    A dictionary of all MappableEntities inside the GameLevel
     """
 
     def __init__(self, dimensions):

@@ -6,7 +6,7 @@ from game_level_view import GameLevelView
 from heart import Heart
 from player_character import PlayerCharacter
 from position import Position
-from position_lookup import PositionLookup
+from position_map import PositionMap
 from snake import Snake
 from terrain import Terrain
 
@@ -19,7 +19,8 @@ class GameLevel():
 
     def __init__(self, screen, player_stats):
         self.dimensions = self.DIMENSIONS
-        self.lookup = PositionLookup(self.dimensions)
+        self.terrain_map = PositionMap(self.dimensions)
+        self.entity_map = PositionMap(self.dimensions)
         self.view = GameLevelView(self, screen)
         self.dim = False
 
@@ -36,13 +37,13 @@ class GameLevel():
         for x in range(0, width):
             for y in range(0, height):
                 if x == 0 or x == width-1 or y == 0 or y == height-1:
-                    position = Position(self.lookup, x, y)
-                    wall_tile = Terrain(self.lookup, position)
+                    position = Position(self.terrain_map, x, y)
+                    wall_tile = Terrain(self.terrain_map, position)
                     self.terrain.append(wall_tile)
 
     def _init_player(self, player_stats):
-        position = self.lookup.rand_vacant()
-        self.player = PlayerCharacter(self.lookup, position)
+        position = self.terrain_map.rand_vacant()
+        self.player = PlayerCharacter(self.terrain_map, position)
         self.player.copy_stats(player_stats)
 
     # def _init_enemies(self):
@@ -70,13 +71,13 @@ class GameLevel():
         self._update_player_character()
         # self._update_enemies()
 
-    def _update_items(self):
-        items = self.items
-        lookup = self.lookup
-        for i in items:
-            if i.is_consumed == True:
-                items.remove(i)
-                lookup.remove(i)
+    # def _update_items(self):
+    #     items = self.items
+    #     lookup = self.lookup
+    #     for i in items:
+    #         if i.is_consumed == True:
+    #             items.remove(i)
+    #             lookup.remove(i)
 
     def _update_player_character(self):
         player = self.player
@@ -85,24 +86,28 @@ class GameLevel():
         dy = player.delta_position.get_y()
         new_position = position.delta(dx, dy)
 
-        entity = self.lookup.entity_at(new_position)
-        if entity is None:
-            player.walk()
-        elif type(entity) is Heart:
-            player.pickup(entity)
-            player.walk()
-        elif type(entity) is Snake:
-            player.attack(entity)
-            player.reset()
+        # entity = self.lookup.entity_at(new_position)
+        # if entity is None:
+        #     player.walk()
+        # elif type(entity) is Heart:
+        #     player.pickup(entity)
+        #     player.walk()
+        # elif type(entity) is Snake:
+        #     player.attack(entity)
+        #     player.reset()
 
-    def _update_enemies(self):
-        for enemy in self.enemies:
-            if enemy.is_dead():
-                self.enemies.remove(enemy)
-                self.lookup.remove(enemy)
+        terrain = self.terrain_map.entity_at(new_position)
+        if terrain is None:
+            player.walk()
 
-        for enemy in self.enemies:
-            enemy.wander()
+    # def _update_enemies(self):
+    #     for enemy in self.enemies:
+    #         if enemy.is_dead():
+    #             self.enemies.remove(enemy)
+    #             self.lookup.remove(enemy)
+
+    #     for enemy in self.enemies:
+    #         enemy.wander()
 
     def set_dim(self, dim):
         self.dim = dim

@@ -1,5 +1,5 @@
 import position
-import position_lookup
+import position_map
 
 class MappableEntity():
     """

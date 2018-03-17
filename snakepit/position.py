@@ -1,6 +1,6 @@
 import pygame
 
-import position_lookup
+import position_map
 
 class Position():
     """
