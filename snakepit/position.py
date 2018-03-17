@@ -21,12 +21,11 @@ class Position():
     def get_tuple(self):
         return (self.x, self.y)
 
-    def set(self, x, y):
-        self.x = x
-        self.y = y
+    def move(self, new_position):
+        self.map.move(self, new_position)
 
-    def delta(self, x=0, y=0):
-        new_x = self.x + x
-        new_y = self.y + y
+    def delta(self, dx=0, dy=0):
+        new_x = self.x + dx
+        new_y = self.y + dy
         return Position(self.map, new_x, new_y)
         

@@ -8,12 +8,9 @@ class MappableEntity():
 
     def __init__(self, position_lookup, position):
         self.position_lookup = position_lookup
-        self.set_position(position)
-
-    def set_position(self, position):
+        self.position = position
         self.position_lookup.insert(position, self)
-        self.position = position
 
-    def move_position(self, position):
-        self.position_lookup.move(self.position, position)
-        self.position = position
+    def move_position(self, new_position):
+        self.position.move(new_position)
+        self.position = new_position
