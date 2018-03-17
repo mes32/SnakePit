@@ -1,6 +1,6 @@
 import pygame
 
-from game_session import GameSession
+import game_loop
 
 title = "Snake Pit"
 screen_size = width, height = 640, 660
@@ -16,4 +16,4 @@ class Application():
         self.screen = pygame.display.set_mode(screen_size)
 
     def run(self):
-        GameSession(self.screen)
+        game_loop.GameLoop(self.screen)

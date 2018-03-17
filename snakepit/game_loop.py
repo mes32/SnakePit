@@ -6,7 +6,7 @@ from player_stats import PlayerStats
 from playing_field import PlayingField
 from position import Position
 
-class GameSession():
+class GameLoop():
     """
     The current game session. Contains the main game loop.
     """
