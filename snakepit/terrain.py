@@ -1,6 +1,6 @@
-from mappable_entity import MappableEntity
+import map_entity
 
-class Terrain(MappableEntity):
+class Terrain(map_entity.MapEntity):
     """
     Type of terrain located at a particular tile of PlayingField
     """

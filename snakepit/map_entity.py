@@ -1,7 +1,7 @@
 import position
 import position_map
 
-class MappableEntity():
+class MapEntity():
     """
     Game objects that can be placed on the map.
     """

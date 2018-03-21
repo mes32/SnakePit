@@ -1,7 +1,8 @@
-from mappable_entity import MappableEntity
+import map_entity
+
 from position import Position
 
-class Heart(MappableEntity):
+class Heart(map_entity.MapEntity):
     """
     A basic powerup that increases current HP by 1 point
     """

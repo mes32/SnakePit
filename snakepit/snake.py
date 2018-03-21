@@ -1,9 +1,10 @@
 import random
 
-from mappable_entity import MappableEntity
+import map_entity
+
 from position import Position
 
-class Snake(MappableEntity):
+class Snake(map_entity.MapEntity):
     """
     The basic snake enemies.
     """

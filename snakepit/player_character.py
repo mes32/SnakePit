@@ -1,10 +1,11 @@
 import pygame
 
-from mappable_entity import MappableEntity
+import map_entity
+
 from position import Position
 from snake import Snake
 
-class PlayerCharacter(MappableEntity):
+class PlayerCharacter(map_entity.MapEntity):
     """
     The player's character in the game.
     """
