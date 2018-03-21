@@ -1,6 +1,8 @@
 import pygame
 import random
 
+import terrain_map
+
 from dimensions import Dimensions
 from game_level_view import GameLevelView
 from heart import Heart
@@ -16,10 +18,11 @@ class GameLevel():
     """
 
     DIMENSIONS = Dimensions(6, 6)
+    terrain_map = terrain_map.TerrainMap(DIMENSIONS)
 
     def __init__(self, screen, player_stats):
         self.dimensions = self.DIMENSIONS
-        self.terrain_map = PositionMap(self.dimensions)
+        
         self.entity_map = PositionMap(self.dimensions)
         self.view = GameLevelView(self, screen)
         self.dim = False
@@ -30,20 +33,23 @@ class GameLevel():
         # self._init_items()
 
     def _init_terrain(self):
-        self.terrain = list()
         width = self.dimensions.get_width()
         height = self.dimensions.get_height()
 
         for x in range(0, width):
             for y in range(0, height):
+                walkable = True
                 if x == 0 or x == width-1 or y == 0 or y == height-1:
-                    position = Position(self.terrain_map, x, y)
-                    wall_tile = Terrain(self.terrain_map, position)
-                    self.terrain.append(wall_tile)
+                    walkable = False
+                else:
+                    walkable = True
+                position = Position(self.terrain_map, x, y)
+                terrain = Terrain(self.terrain_map, position, walkable)
+                self.terrain_map.insert(position, terrain)
 
     def _init_player(self, player_stats):
         position = self.terrain_map.rand_vacant()
-        self.player = PlayerCharacter(self.terrain_map, position)
+        self.player = PlayerCharacter(self.entity_map, position)
         self.player.copy_stats(player_stats)
 
     # def _init_enemies(self):
@@ -97,7 +103,7 @@ class GameLevel():
         #     player.reset()
 
         terrain = self.terrain_map.entity_at(new_position)
-        if terrain is None:
+        if terrain.is_walkable():
             player.walk()
 
     # def _update_enemies(self):

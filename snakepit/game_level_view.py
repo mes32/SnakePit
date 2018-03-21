@@ -58,9 +58,10 @@ class GameLevelView():
         self.screen.blit(image, rect)
 
     def _render_terrain(self):
-        terrain = self.field.terrain
-        for tile in terrain:
-            self._draw_at(self.wall_image, tile.position)
+        terrain_list = self.field.terrain_map.list
+        for terrain in terrain_list:
+            if not terrain.is_walkable():
+                self._draw_at(self.wall_image, terrain.position)
 
     def _render_items(self):
         items = self.field.items
