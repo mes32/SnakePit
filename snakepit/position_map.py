@@ -6,7 +6,7 @@ import position
 
 class PositionMap():
     """
-    A dictionary of all MappableEntities inside the GameLevel
+    A dictionary of all MapEntities inside the GameLevel
     """
 
     def __init__(self, dimensions):
@@ -52,13 +52,3 @@ class PositionMap():
             return True
         else:
             return False
-
-    def rand_vacant(self):
-            max_x = self.dimensions.get_width() - 1
-            max_y = self.dimensions.get_height() - 1
-            while True:
-                x = random.randint(0, max_x)
-                y = random.randint(0, max_y)
-                test_position = position.Position(self, x, y)
-                if self.is_vacant(test_position):
-                    return test_position

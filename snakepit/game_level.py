@@ -1,6 +1,7 @@
 import pygame
 import random
 
+import position
 import terrain_map
 
 from dimensions import Dimensions
@@ -17,19 +18,20 @@ class GameLevel():
     The current level of the game.
     """
 
-    DIMENSIONS = Dimensions(6, 6)
-    terrain_map = terrain_map.TerrainMap(DIMENSIONS)
+    dimensions = Dimensions(10, 10)
+    terrain_map = terrain_map.TerrainMap(dimensions)
+    player_map = PositionMap(dimensions)
+    creature_map = PositionMap(dimensions)
+    item_map = PositionMap(dimensions)
 
     def __init__(self, screen, player_stats):
-        self.dimensions = self.DIMENSIONS
         
-        self.entity_map = PositionMap(self.dimensions)
         self.view = GameLevelView(self, screen)
         self.dim = False
 
         self._init_terrain()
         self._init_player(player_stats)
-        # self._init_enemies()
+        self._init_creatures()
         self._init_items()
 
     def _init_terrain(self):
@@ -43,50 +45,42 @@ class GameLevel():
                     walkable = False
                 else:
                     walkable = True
-                position = Position(self.terrain_map, x, y)
+                position = Position(x, y)
                 terrain = Terrain(self.terrain_map, position, walkable)
                 self.terrain_map.insert(position, terrain)
 
     def _init_player(self, player_stats):
-        position = self.terrain_map.rand_vacant()
-        self.player = PlayerCharacter(self.entity_map, position)
+        position = self._rand_vacant()
+        self.player = PlayerCharacter(self.player_map, position)
         self.player.copy_stats(player_stats)
-        self.entity_map.insert(position, self.player)
+        self.player_map.insert(position, self.player)
 
-    # def _init_enemies(self):
-    #     self.enemies = list()
-
-    #     num_enemies = 4
-    #     num_enemies = 0
-    #     for e in range(0, num_enemies):
-    #         position = self.lookup.rand_vacant()
-    #         enemy = Snake(self.lookup, position)
-    #         self.enemies.append(enemy)
+    def _init_creatures(self):
+        num_enemies = 1
+        for e in range(0, num_enemies):
+            position = self._rand_vacant()
+            enemy = Snake(self.creature_map, position)
+            self.creature_map.insert(position, enemy)
 
     def _init_items(self):
-        terrain_map = self.terrain_map
-        entity_map = self.entity_map
-
+        item_map = self.item_map
         num_items = 3
         for i in range(0, num_items):
-            while True:
-                position = terrain_map.rand_vacant()
-                if entity_map.entity_at(position) is None:
-                    break
-
-            item = Heart(entity_map, position)
-            entity_map.insert(position, item)
+            position = self._rand_vacant()
+            item = Heart(item_map, position)
+            item_map.insert(position, item)
 
     def update(self):
+        print("in update()")
         self._update_player_character()
         self._update_items()
-        # self._update_enemies()
+        self._update_enemies()
 
     def _update_items(self):
-        entity_list = self.entity_map.list
-        for entity in entity_list:
-            if type(entity) is Heart and entity.is_consumed == True:
-                self.entity_map.remove(entity)
+        item_list = self.item_map.list
+        for item in item_list:
+            if type(item) is Heart and item.is_consumed == True:
+                self.item_map.remove(item)
 
     def _update_player_character(self):
         player = self.player
@@ -96,35 +90,40 @@ class GameLevel():
         new_position = position.delta(dx, dy)
 
         terrain_map = self.terrain_map
-        entity_map = self.entity_map
-
-        # entity = self.lookup.entity_at(new_position)
-        # if entity is None:
-        #     player.walk()
-        # elif type(entity) is Heart:
-        #     player.pickup(entity)
-        #     player.walk()
-        # elif type(entity) is Snake:
-        #     player.attack(entity)
-        #     player.reset()
+        item_map = self.item_map
+        creature_map = self.creature_map
 
         terrain = terrain_map.entity_at(new_position)
         if terrain.is_walkable():
-            entity = entity_map.entity_at(new_position)
-            if entity is None:
+            item = item_map.entity_at(new_position)
+            creature = creature_map.entity_at(new_position)
+            if item is not None and type(item) is Heart:
+                player.pickup(item)
                 player.walk()
-            elif type(entity) is Heart:
-                player.pickup(entity)
+            elif creature is not None and type(creature) is Snake:
+                player.attack(creature)
+                player.reset()
+            else:
                 player.walk()
 
-    # def _update_enemies(self):
-    #     for enemy in self.enemies:
-    #         if enemy.is_dead():
-    #             self.enemies.remove(enemy)
-    #             self.lookup.remove(enemy)
+    def _update_enemies(self):
+        creature_list = self.creature_map.list
+        for enemy in creature_list:
+            if enemy.is_dead():
+                creature_list.remove(enemy)
 
-    #     for enemy in self.enemies:
-    #         enemy.wander()
+        # for enemy in creature_list:
+        #     enemy.wander(self.terrain_map)
+
+    def _rand_vacant(self):
+        max_x = self.dimensions.get_width() - 1
+        max_y = self.dimensions.get_height() - 1
+        while True:
+            x = random.randint(0, max_x)
+            y = random.randint(0, max_y)
+            test_position = position.Position(x, y)
+            if self.terrain_map.is_vacant(test_position) and self.player_map.is_vacant(test_position) and self.creature_map.is_vacant(test_position):
+                return test_position
 
     def set_dim(self, dim):
         self.dim = dim

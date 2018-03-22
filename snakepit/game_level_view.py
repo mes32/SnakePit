@@ -34,7 +34,7 @@ class GameLevelView():
         self.screen.fill(self.COLOR_BLACK)
         self._render_terrain()
         self._render_items()
-        # self._render_enemies()
+        self._render_enemies()
         self._render_player()
         self._render_display_bar()
         if self.field.dim:
@@ -65,13 +65,13 @@ class GameLevelView():
                 self._draw_at(self.wall_image, terrain.position)
 
     def _render_items(self):
-        entity_list = self.field.entity_map.list
-        for entity in entity_list:
-            if type(entity) is heart.Heart:
-                self._draw_at(self.heart_image, entity.position)
+        item_list = self.field.item_map.list
+        for item in item_list:
+            if type(item) is heart.Heart:
+                self._draw_at(self.heart_image, item.position)
 
     def _render_enemies(self):
-        enemies = self.field.enemies
+        enemies = self.field.creature_map.list
         for enemy in enemies:
             self._draw_at(self.snake_image, enemy.position)
 
