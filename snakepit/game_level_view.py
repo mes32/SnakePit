@@ -2,6 +2,7 @@ import pygame
 import position
 import game_level
 import player_character
+import heart
 
 from dimensions import Dimensions
 
@@ -32,7 +33,7 @@ class GameLevelView():
     def render(self):
         self.screen.fill(self.COLOR_BLACK)
         self._render_terrain()
-        # self._render_items()
+        self._render_items()
         # self._render_enemies()
         self._render_player()
         self._render_display_bar()
@@ -64,9 +65,10 @@ class GameLevelView():
                 self._draw_at(self.wall_image, terrain.position)
 
     def _render_items(self):
-        items = self.field.items
-        for item in items:
-            self._draw_at(self.heart_image, item.position)         
+        entity_list = self.field.entity_map.list
+        for entity in entity_list:
+            if type(entity) is heart.Heart:
+                self._draw_at(self.heart_image, entity.position)
 
     def _render_enemies(self):
         enemies = self.field.enemies

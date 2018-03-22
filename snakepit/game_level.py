@@ -30,7 +30,7 @@ class GameLevel():
         self._init_terrain()
         self._init_player(player_stats)
         # self._init_enemies()
-        # self._init_items()
+        self._init_items()
 
     def _init_terrain(self):
         width = self.dimensions.get_width()
@@ -51,6 +51,7 @@ class GameLevel():
         position = self.terrain_map.rand_vacant()
         self.player = PlayerCharacter(self.entity_map, position)
         self.player.copy_stats(player_stats)
+        self.entity_map.insert(position, self.player)
 
     # def _init_enemies(self):
     #     self.enemies = list()
@@ -62,28 +63,30 @@ class GameLevel():
     #         enemy = Snake(self.lookup, position)
     #         self.enemies.append(enemy)
 
-    # def _init_items(self):
-    #     self.items = list()
+    def _init_items(self):
+        terrain_map = self.terrain_map
+        entity_map = self.entity_map
 
-    #     num_items = 3
-    #     num_items = 0
-    #     for i in range(0, num_items):
-    #         position = self.lookup.rand_vacant()
-    #         item = Heart(self.lookup, position)
-    #         self.items.append(item)
+        num_items = 3
+        for i in range(0, num_items):
+            while True:
+                position = terrain_map.rand_vacant()
+                if entity_map.entity_at(position) is None:
+                    break
+
+            item = Heart(entity_map, position)
+            entity_map.insert(position, item)
 
     def update(self):
-        # self._update_items()
         self._update_player_character()
+        self._update_items()
         # self._update_enemies()
 
-    # def _update_items(self):
-    #     items = self.items
-    #     lookup = self.lookup
-    #     for i in items:
-    #         if i.is_consumed == True:
-    #             items.remove(i)
-    #             lookup.remove(i)
+    def _update_items(self):
+        entity_list = self.entity_map.list
+        for entity in entity_list:
+            if type(entity) is Heart and entity.is_consumed == True:
+                self.entity_map.remove(entity)
 
     def _update_player_character(self):
         player = self.player
@@ -91,6 +94,9 @@ class GameLevel():
         dx = player.delta_position.get_x()
         dy = player.delta_position.get_y()
         new_position = position.delta(dx, dy)
+
+        terrain_map = self.terrain_map
+        entity_map = self.entity_map
 
         # entity = self.lookup.entity_at(new_position)
         # if entity is None:
@@ -102,9 +108,14 @@ class GameLevel():
         #     player.attack(entity)
         #     player.reset()
 
-        terrain = self.terrain_map.entity_at(new_position)
+        terrain = terrain_map.entity_at(new_position)
         if terrain.is_walkable():
-            player.walk()
+            entity = entity_map.entity_at(new_position)
+            if entity is None:
+                player.walk()
+            elif type(entity) is Heart:
+                player.pickup(entity)
+                player.walk()
 
     # def _update_enemies(self):
     #     for enemy in self.enemies:

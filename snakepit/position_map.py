@@ -35,8 +35,9 @@ class PositionMap():
 
     def remove(self, entity):
         position = entity.position
-        self.delete(position)
-        self.list.remove(entity)
+        if entity in self.list:
+            self.list.remove(entity)
+            self.delete(position)
 
     def move(self, position_start, position_end):
         entity_to_move = self.entity_at(position_start)
