@@ -26,6 +26,11 @@ class PositionMap():
         self.table[tuple] = item
         self.list.append(item)
 
+        print("after insert ++++++")
+        for i in self.list:
+            print(str(i))
+        print("+++++++++++++++++++")
+
     def delete(self, position):
         if self.is_vacant(position):
             return False

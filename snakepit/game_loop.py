@@ -16,8 +16,8 @@ class GameLoop():
         player_stats = PlayerStats()
         level = game_level.GameLevel(screen, player_stats)
         player = level.player
+        level.display()
         while True:
-            level.display()
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     sys.exit()
@@ -39,5 +39,6 @@ class GameLoop():
                         player.plan_walk(x=-1)
                     elif event.key == pygame.K_RIGHT:
                         player.plan_walk(x=1)
+                    print("main update()")
                     level.update()
                     level.display()

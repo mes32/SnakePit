@@ -48,3 +48,6 @@ class Snake(map_entity.MapEntity):
             return True
         else:
             return False
+
+    def __str__(self):
+        return "snake: " + str(self.position)

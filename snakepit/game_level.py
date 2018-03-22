@@ -29,7 +29,7 @@ class GameLevel():
         self.view = GameLevelView(self, screen)
         self.dim = False
 
-        self._init_terrain()
+        # self._init_terrain()
         self._init_player(player_stats)
         self._init_creatures()
         self._init_items()
@@ -51,30 +51,40 @@ class GameLevel():
 
     def _init_player(self, player_stats):
         position = self._rand_vacant()
+        # TODO: constructor also inserts at position (Maybe it should?)
+        # TODO: PositionMap allows double inserts at the same Position and this is definitely incorrect
         self.player = PlayerCharacter(self.player_map, position)
-        self.player.copy_stats(player_stats)
-        self.player_map.insert(position, self.player)
+        # self.player.copy_stats(player_stats)
+        # self.player_map.insert(position, self.player)
 
     def _init_creatures(self):
-        num_enemies = 1
+        num_enemies = 0
         for e in range(0, num_enemies):
             position = self._rand_vacant()
             enemy = Snake(self.creature_map, position)
+            print("insert() in _init_creatures()")
             self.creature_map.insert(position, enemy)
+
+        # print("++++++")
+        # for enemy in self.creature_map.list:
+        #     print(str(enemy))
+        # print("------")
 
     def _init_items(self):
         item_map = self.item_map
-        num_items = 3
+        num_items = 0
         for i in range(0, num_items):
             position = self._rand_vacant()
             item = Heart(item_map, position)
             item_map.insert(position, item)
 
     def update(self):
-        print("in update()")
         self._update_player_character()
+        self.display()
         self._update_items()
+        self.display()
         self._update_enemies()
+        self.display()
 
     def _update_items(self):
         item_list = self.item_map.list
@@ -107,13 +117,26 @@ class GameLevel():
                 player.walk()
 
     def _update_enemies(self):
-        creature_list = self.creature_map.list
+        print("_update_enemies()")
+        creature_map = self.creature_map
+        creature_list = creature_map.list
         for enemy in creature_list:
             if enemy.is_dead():
-                creature_list.remove(enemy)
+                print("remove snake")
+                creature_map.remove(enemy)
+
+        # TODO: need to adjust the order of _updates
+        # TODO: need to make sure only one snake can occupy a space
+        # TODO: need to make sure that snakes cannot go where hearts are
+        # TODO: need to fix bug in wander that makes snakes move all over the map
 
         # for enemy in creature_list:
         #     enemy.wander(self.terrain_map)
+
+        # print("++++++")
+        # for enemy in self.creature_map.list:
+        #     print(str(enemy))
+        # print("------")
 
     def _rand_vacant(self):
         max_x = self.dimensions.get_width() - 1
@@ -129,4 +152,5 @@ class GameLevel():
         self.dim = dim
 
     def display(self):
+        print("display()")
         self.view.render()
