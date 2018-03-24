@@ -39,6 +39,5 @@ class GameLoop():
                         player.plan_walk(x=-1)
                     elif event.key == pygame.K_RIGHT:
                         player.plan_walk(x=1)
-                    print("main update()")
                     level.update()
                     level.display()
