@@ -52,7 +52,6 @@ class GameLevel():
 
     def _init_player(self, player_stats):
         position = self._rand_vacant()
-        # TODO: PositionMap allows double inserts at the same Position and this is definitely incorrect
         self.player = PlayerCharacter(self.player_map, position)
         self.player.copy_stats(player_stats)
 
@@ -114,9 +113,8 @@ class GameLevel():
             if enemy.is_dead():
                 enemy.delete()
 
-        # TODO: Wander currently is broken
-        # for enemy in creature_list:
-        #     enemy.wander(self.terrain_map)
+        for enemy in creature_list:
+            enemy.wander(self)
 
     def _rand_vacant(self):
         max_x = self.dimensions.get_width() - 1
