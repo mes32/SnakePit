@@ -19,15 +19,16 @@ class GameLevel():
     """
 
     dimensions = Dimensions(10, 10)
-    terrain_map = terrain_map.TerrainMap(dimensions)
-    player_map = PositionMap(dimensions)
-    creature_map = PositionMap(dimensions)
-    item_map = PositionMap(dimensions)
 
     def __init__(self, screen, player_stats):
         
         self.view = GameLevelView(self, screen)
         self.dim = False
+
+        self.terrain_map = terrain_map.TerrainMap(self.dimensions)
+        self.player_map = PositionMap(self.dimensions)
+        self.creature_map = PositionMap(self.dimensions)
+        self.item_map = PositionMap(self.dimensions)
 
         self._init_terrain()
         self._init_player(player_stats)
@@ -115,7 +116,7 @@ class GameLevel():
             if enemy.is_dead():
                 creature_map.remove(enemy)
 
-        # TODO: Wander currently is brokent
+        # TODO: Wander currently is broken
         # for enemy in creature_list:
         #     enemy.wander(self.terrain_map)
 

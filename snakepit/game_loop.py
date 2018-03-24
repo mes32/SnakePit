@@ -27,9 +27,10 @@ class GameLoop():
                     if quit:
                         sys.exit()
                     else:
-                        level = PlayingField(screen, player_stats)
+                        level = game_level.GameLevel(screen, player_stats)
                         player = level.player
-                        break
+                        level.display()
+                        continue
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_UP:
                         player.plan_walk(y=-1)
