@@ -22,6 +22,8 @@ class PositionMap():
             return self.table[tuple]
 
     def insert(self, position, item):
+        if not self.is_vacant(position):
+            return
         tuple = position.get_tuple()
         self.table[tuple] = item
         self.set.add(item)
