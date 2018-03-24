@@ -78,7 +78,7 @@ class GameLevel():
         self.display()
 
     def _update_items(self):
-        item_list = self.item_map.list
+        item_list = self.item_map.get_list()
         for item in item_list:
             if type(item) is Heart and item.is_consumed == True:
                 item.delete()
@@ -109,7 +109,7 @@ class GameLevel():
 
     def _update_enemies(self):
         creature_map = self.creature_map
-        creature_list = creature_map.list
+        creature_list = creature_map.get_list()
         for enemy in creature_list:
             if enemy.is_dead():
                 enemy.delete()

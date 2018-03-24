@@ -12,7 +12,7 @@ class PositionMap():
     def __init__(self, dimensions):
         self.dimensions = dimensions
         self.table = dict()
-        self.list = list()
+        self.set = set()
 
     def entity_at(self, position):
         tuple = position.get_tuple()
@@ -24,7 +24,7 @@ class PositionMap():
     def insert(self, position, item):
         tuple = position.get_tuple()
         self.table[tuple] = item
-        self.list.append(item)
+        self.set.add(item)
 
     def delete(self, position):
         if self.is_vacant(position):
@@ -35,9 +35,12 @@ class PositionMap():
 
     def remove(self, entity):
         position = entity.position
-        if entity in self.list:
-            self.list.remove(entity)
+        if entity in self.set:
+            self.set.remove(entity)
             self.delete(position)
+
+    def get_list(self):
+        return list(self.set)
 
     def move(self, position_start, position_end):
         entity_to_move = self.entity_at(position_start)

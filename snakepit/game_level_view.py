@@ -59,19 +59,19 @@ class GameLevelView():
         self.screen.blit(image, rect)
 
     def _render_terrain(self):
-        terrain_list = self.field.terrain_map.list
+        terrain_list = self.field.terrain_map.get_list()
         for terrain in terrain_list:
             if not terrain.is_walkable():
                 self._draw_at(self.wall_image, terrain.position)
 
     def _render_items(self):
-        item_list = self.field.item_map.list
+        item_list = self.field.item_map.get_list()
         for item in item_list:
             if type(item) is heart.Heart:
                 self._draw_at(self.heart_image, item.position)
 
     def _render_enemies(self):
-        enemies = self.field.creature_map.list
+        enemies = self.field.creature_map.get_list()
         for enemy in enemies:
             self._draw_at(self.snake_image, enemy.position)
 
