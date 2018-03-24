@@ -53,7 +53,6 @@ class GameLevel():
     def _init_player(self, player_stats):
         position = self._rand_vacant()
         # TODO: PositionMap allows double inserts at the same Position and this is definitely incorrect
-        # TODO: MapEntity should also handle removing from PositionMap
         self.player = PlayerCharacter(self.player_map, position)
         self.player.copy_stats(player_stats)
 
@@ -69,7 +68,6 @@ class GameLevel():
         for i in range(0, num_items):
             position = self._rand_vacant()
             item = Heart(item_map, position)
-            # item_map.insert(position, item)
 
     def update(self):
         self._update_player_character()
@@ -83,7 +81,7 @@ class GameLevel():
         item_list = self.item_map.list
         for item in item_list:
             if type(item) is Heart and item.is_consumed == True:
-                self.item_map.remove(item)
+                item.delete()
 
     def _update_player_character(self):
         player = self.player
@@ -114,7 +112,7 @@ class GameLevel():
         creature_list = creature_map.list
         for enemy in creature_list:
             if enemy.is_dead():
-                creature_map.remove(enemy)
+                enemy.delete()
 
         # TODO: Wander currently is broken
         # for enemy in creature_list:

@@ -14,3 +14,6 @@ class MapEntity():
     def move_position(self, new_position):
         self.position_map.move(self.position, new_position)
         self.position = new_position
+
+    def delete(self):
+        self.position_map.remove(self)
