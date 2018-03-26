@@ -1,11 +1,12 @@
 import pygame
 import random
 
+import game_level_generator
 import position
+import stairs_down
 import terrain_map
 import terrain
 import wall
-import stairs_down
 
 from dimensions import Dimensions
 from game_level_view import GameLevelView
@@ -23,19 +24,19 @@ class GameLevel():
     dimensions = Dimensions(10, 10)
 
     def __init__(self, screen, player_stats):
-        
+        self.depth = 1
         self.view = GameLevelView(self, screen)
         self.dim = False
+        self.initial_player_stats = player_stats
 
-        self.terrain_map = terrain_map.TerrainMap(self.dimensions)
-        self.player_map = PositionMap(self.dimensions)
-        self.creature_map = PositionMap(self.dimensions)
-        self.item_map = PositionMap(self.dimensions)
+        self.player = None
+        
+        self.terrain_map = None
+        self.player_map = None
+        self.creature_map = None
+        self.item_map = None
 
-        self._init_terrain()
-        self._init_player(player_stats)
-        self._init_creatures()
-        self._init_items()
+        game_level_generator.GameLevelGenerator(self)
 
     def set_dim(self, dim):
         self.dim = dim
@@ -45,43 +46,18 @@ class GameLevel():
 
     def update(self):
         self._update_player_character()
-        self.display()
         self._update_items()
-        self.display()
         self._update_enemies()
-        self.display()
 
-    def _init_terrain(self):
-        width = self.dimensions.get_width()
-        height = self.dimensions.get_height()
-
-        for x in range(0, width):
-            for y in range(0, height):
-                position = Position(x, y)
-                if x == 0 or x == width-1 or y == 0 or y == height-1:
-                    new_terrain = wall.Wall(self.terrain_map, position)
-                else:
-                    new_terrain = terrain.Terrain(self.terrain_map, position)
-        position = self._rand_vacant()
-        new_terrain = stairs_down.StairsDown(self.terrain_map, position)
-
-    def _init_player(self, player_stats):
-        position = self._rand_vacant()
-        self.player = PlayerCharacter(self.player_map, position)
-        self.player.copy_stats(player_stats)
-
-    def _init_creatures(self):
-        num_enemies = 3
-        for e in range(0, num_enemies):
-            position = self._rand_vacant()
-            enemy = Snake(self.creature_map, position)
-
-    def _init_items(self):
-        item_map = self.item_map
-        num_items = 2
-        for i in range(0, num_items):
-            position = self._rand_vacant()
-            item = Heart(item_map, position)
+    def rand_vacant(self):
+        max_x = self.dimensions.get_width() - 1
+        max_y = self.dimensions.get_height() - 1
+        while True:
+            x = random.randint(0, max_x)
+            y = random.randint(0, max_y)
+            test_position = position.Position(x, y)
+            if self.terrain_map.is_vacant(test_position) and self.player_map.is_vacant(test_position) and self.creature_map.is_vacant(test_position):
+                return test_position
 
     def _update_items(self):
         item_list = self.item_map.get_list()
@@ -125,21 +101,6 @@ class GameLevel():
         for enemy in creature_list:
             enemy.wander(self)
 
-    def _rand_vacant(self):
-        max_x = self.dimensions.get_width() - 1
-        max_y = self.dimensions.get_height() - 1
-        while True:
-            x = random.randint(0, max_x)
-            y = random.randint(0, max_y)
-            test_position = position.Position(x, y)
-            if self.terrain_map.is_vacant(test_position) and self.player_map.is_vacant(test_position) and self.creature_map.is_vacant(test_position):
-                return test_position
-
     def _down_level(self):
-        self.terrain_map = terrain_map.TerrainMap(self.dimensions)
-        self.creature_map = PositionMap(self.dimensions)
-        self.item_map = PositionMap(self.dimensions)
-
-        self._init_terrain()
-        self._init_creatures()
-        self._init_items()
+        self.depth = self.depth + 1
+        game_level_generator.GameLevelGenerator(self)
