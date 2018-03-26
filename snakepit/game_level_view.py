@@ -14,7 +14,7 @@ class GameLevelView():
     COLOR_DIM = (255, 0, 0, 128)
 
     player_image = pygame.image.load("./resources/images/PlayerCharacter.png")
-    wall_image = pygame.image.load("./resources/images/Wall.png")
+    # wall_image = pygame.image.load("./resources/images/Wall.png")
     snake_image = pygame.image.load("./resources/images/Snake.png")
     heart_image = pygame.image.load("./resources/images/Heart.png")
     display_heart_full = pygame.image.load("./resources/images/IndicatorHeart_Full.png")
@@ -55,14 +55,17 @@ class GameLevelView():
         return pygame.Rect(x0, y0, x1, y1)
 
     def _draw_at(self, image, position):
+        if image is None:
+            return
         rect = self._cell_at(position)
         self.screen.blit(image, rect)
 
     def _render_terrain(self):
         terrain_list = self.field.terrain_map.get_list()
         for terrain in terrain_list:
-            if not terrain.is_walkable():
-                self._draw_at(self.wall_image, terrain.position)
+            # if not terrain.is_walkable():
+            #     self._draw_at(self.wall_image, terrain.position)
+            self._draw_at(terrain.image, terrain.position)
 
     def _render_items(self):
         item_list = self.field.item_map.get_list()

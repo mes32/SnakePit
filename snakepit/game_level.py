@@ -3,6 +3,8 @@ import random
 
 import position
 import terrain_map
+import terrain
+import wall
 
 from dimensions import Dimensions
 from game_level_view import GameLevelView
@@ -11,7 +13,6 @@ from player_character import PlayerCharacter
 from position import Position
 from position_map import PositionMap
 from snake import Snake
-from terrain import Terrain
 
 class GameLevel():
     """
@@ -41,14 +42,12 @@ class GameLevel():
 
         for x in range(0, width):
             for y in range(0, height):
-                walkable = True
-                if x == 0 or x == width-1 or y == 0 or y == height-1:
-                    walkable = False
-                else:
-                    walkable = True
                 position = Position(x, y)
-                terrain = Terrain(self.terrain_map, position, walkable)
-                self.terrain_map.insert(position, terrain)
+                if x == 0 or x == width-1 or y == 0 or y == height-1:
+                    new_terrain = wall.Wall(self.terrain_map, position)
+                else:
+                    new_terrain = terrain.Terrain(self.terrain_map, position)
+                self.terrain_map.insert(position, new_terrain)
 
     def _init_player(self, player_stats):
         position = self._rand_vacant()
