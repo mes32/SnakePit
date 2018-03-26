@@ -63,8 +63,6 @@ class GameLevelView():
     def _render_terrain(self):
         terrain_list = self.field.terrain_map.get_list()
         for terrain in terrain_list:
-            # if not terrain.is_walkable():
-            #     self._draw_at(self.wall_image, terrain.position)
             self._draw_at(terrain.image, terrain.position)
 
     def _render_items(self):

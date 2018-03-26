@@ -5,6 +5,7 @@ import position
 import terrain_map
 import terrain
 import wall
+import stairs_down
 
 from dimensions import Dimensions
 from game_level_view import GameLevelView
@@ -47,7 +48,9 @@ class GameLevel():
                     new_terrain = wall.Wall(self.terrain_map, position)
                 else:
                     new_terrain = terrain.Terrain(self.terrain_map, position)
-                self.terrain_map.insert(position, new_terrain)
+
+        position = self._rand_vacant()
+        new_terrain = stairs_down.StairsDown(self.terrain_map, position)
 
     def _init_player(self, player_stats):
         position = self._rand_vacant()
