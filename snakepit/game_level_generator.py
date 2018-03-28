@@ -36,11 +36,6 @@ class GameLevelGenerator():
         self._init_creatures()
         self._init_items()
 
-        # self._init_terrain()
-        # self._init_player(player_stats)
-        # self._init_creatures()
-        # self._init_items()
-
     def _init_terrain(self):
         width = self.level.dimensions.get_width()
         height = self.level.dimensions.get_height()

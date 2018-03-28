@@ -80,14 +80,15 @@ class GameLevel():
         if terrain.is_walkable():
             item = item_map.entity_at(new_position)
             creature = creature_map.entity_at(new_position)
-            if type(terrain) is stairs_down.StairsDown:
-                self._down_level()
             if item is not None and type(item) is Heart:
                 player.pickup(item)
                 player.walk()
             elif creature is not None and type(creature) is Snake:
                 player.attack(creature)
                 player.reset()
+            elif type(terrain) is stairs_down.StairsDown:
+                player.walk()
+                self._down_level()
             else:
                 player.walk()
 
