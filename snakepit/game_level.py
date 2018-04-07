@@ -24,6 +24,7 @@ class GameLevel():
 
     def __init__(self, screen, player_stats):
         self.depth = 1
+        self.kills = 0
         self.initial_player_stats = player_stats
 
         self.player = None
@@ -89,6 +90,7 @@ class GameLevel():
         for enemy in creature_list:
             if enemy.is_dead():
                 enemy.delete()
+                self.kills = self.kills + 1
 
         for enemy in creature_list:
             enemy.wander(self)

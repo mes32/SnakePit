@@ -19,9 +19,7 @@ class GameLoop():
 
         script_dir = os.path.dirname(__file__)
         path = "../data/savegame/001.pickle"
-        # path = os.path.relpath("../data/savegame/001.pickle")
         save_file = os.path.join(script_dir, path)
-        print(save_file)
 
         player_stats = PlayerStats()
         level = game_level.GameLevel(screen, player_stats)
