@@ -8,9 +8,8 @@ class GameOverMenu():
     PROMPT_TEXT = "You have died. Play again: y/n?"
     WHITE = (255, 255, 255)
 
-    def __init__(self, screen, field):
-        field.set_dim(True)
-        field.display()
+    def __init__(self, screen, view):
+        view.render_dim()
 
         screen_width = screen.get_width()
         screen_height = screen.get_height()

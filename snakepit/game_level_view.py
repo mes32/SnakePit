@@ -37,8 +37,16 @@ class GameLevelView():
         self._render_enemies()
         self._render_player()
         self._render_display_bar()
-        if self.field.dim:
-            self._render_dim_overlay()
+        pygame.display.flip()
+
+    def render_dim(self):
+        self.screen.fill(self.COLOR_BLACK)
+        self._render_terrain()
+        self._render_items()
+        self._render_enemies()
+        self._render_player()
+        self._render_display_bar()
+        self._render_dim_overlay()
         pygame.display.flip()
 
     def _cell_at(self, position):

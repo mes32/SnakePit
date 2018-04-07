@@ -9,7 +9,6 @@ import terrain
 import wall
 
 from dimensions import Dimensions
-from game_level_view import GameLevelView
 from heart import Heart
 from player_character import PlayerCharacter
 from position import Position
@@ -25,8 +24,6 @@ class GameLevel():
 
     def __init__(self, screen, player_stats):
         self.depth = 1
-        self.view = GameLevelView(self, screen)
-        self.dim = False
         self.initial_player_stats = player_stats
 
         self.player = None
@@ -37,12 +34,6 @@ class GameLevel():
         self.item_map = None
 
         game_level_generator.GameLevelGenerator(self)
-
-    def set_dim(self, dim):
-        self.dim = dim
-
-    def display(self):
-        self.view.render()
 
     def update(self):
         self._update_player_character()
