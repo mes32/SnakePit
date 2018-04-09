@@ -5,6 +5,7 @@ import pygame
 
 import game_level
 import game_level_view
+import save_menu
 
 from game_over_menu import GameOverMenu
 from player_stats import PlayerStats
@@ -18,7 +19,7 @@ class GameLoop():
     def __init__(self, screen):
 
         script_dir = os.path.dirname(__file__)
-        path = "../data/savegame/001.pickle"
+        path = "../data/savegame/1.pickle"
         save_file = os.path.join(script_dir, path)
 
         player_stats = PlayerStats()
@@ -50,11 +51,8 @@ class GameLoop():
                         player.plan_walk(x=-1)
                     elif event.key == pygame.K_RIGHT:
                         player.plan_walk(x=1)
-                    elif event.key == pygame.K_1:
-                        print(" -- save game.")
-                        fh = open(save_file, "wb")
-                        pickle.dump(level, fh)
-                        continue
+                    elif event.key == pygame.K_s:
+                        save_menu.SaveMenu(screen, view, level)
                     elif event.key == pygame.K_2:
                         if os.path.exists(save_file):
                             print(" -- load game.")

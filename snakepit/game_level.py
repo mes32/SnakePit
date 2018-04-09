@@ -25,8 +25,9 @@ class GameLevel():
     def __init__(self, screen, player_stats):
         self.depth = 1
         self.kills = 0
-        self.initial_player_stats = player_stats
+        self.timestamp = ""
 
+        self.initial_player_stats = player_stats
         self.player = None
         
         self.terrain_map = None

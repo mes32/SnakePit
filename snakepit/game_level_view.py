@@ -118,5 +118,5 @@ class GameLevelView():
         width = self.screen.get_width()
         height = self.screen.get_height()
         overlay = pygame.Surface((width, height), pygame.SRCALPHA)
-        overlay.fill((0, 0, 0, 160))
+        overlay.fill((0, 0, 0, 200))
         self.screen.blit(overlay, (0,0))
