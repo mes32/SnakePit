@@ -50,6 +50,16 @@ class SaveMenu():
         self.bold_type = pygame.font.Font(self.BOLD_TYPEFACE, self.FONT_SIZE)
         self.note_type = pygame.font.Font(self.ITALIC_TYPEFACE, self.NOTE_SIZE)
 
+        self.display_slots = []
+        for i in range(self.NUM_SLOTS):
+            if os.path.exists(self.SAVE_SLOTS[i]):
+                fh = open(self.SAVE_SLOTS[i], 'rb')
+                temp_level = pickle.load(fh)
+                timestamp = temp_level.timestamp
+                self.display_slots.append("%d.    %s" % ((i+1), timestamp))
+            else:
+                self.display_slots.append("%d.    (empty)" % (i+1))
+
         self._run()
 
     def _display(self):
@@ -57,17 +67,7 @@ class SaveMenu():
         self.view.render_dim()
         self._center_text(self.TITLE_TEXT)
         for i in range(self.NUM_SLOTS):
-
-            if os.path.exists(self.SAVE_SLOTS[i]):
-
-                # TODO: This is a ridiculously resource intensive way to achieve this
-                fh = open(self.SAVE_SLOTS[i], "rb")
-                temp_level = pickle.load(fh)
-                timestamp = temp_level.timestamp
-                line_str = "%d.    %s" % ((i+1), timestamp)
-            else:
-                line_str = "%d.    (empty)" % (i+1)
-
+            line_str = self.display_slots[i]
             if i == self.selected:
                 self._left_text(line_str, True)
             else:
