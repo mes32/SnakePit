@@ -42,6 +42,7 @@ class SaveMenu():
 
         self.line_counter = 0
         self.selected = 0
+        self.overwrite = False
 
         self.screen_width = screen.get_width()
         self.screen_height = screen.get_height()
@@ -76,6 +77,37 @@ class SaveMenu():
         self._note_text("")
         self._note_text("Use arrows keys to select a save slot. Press ESC to cancel.")
         pygame.display.flip()
+
+    def _display_overwrite(self):
+        self.line_counter = 0
+        self.view.render_dim()
+        self._center_text(self.TITLE_TEXT)
+                        
+        self._center_text("Overwrite existing save game?")
+        if self.overwrite:
+            self._left_text("Yes", True)
+            self._left_text("No")
+        else:
+            self._left_text("Yes")
+            self._left_text("No", True) 
+
+        self._note_text("")
+        self._note_text("Use arrows keys to make selection.")
+        pygame.display.flip()
+
+    def _overwrite(self):
+        self._display_overwrite()
+        while True:
+            for event in pygame.event.get():
+                if event.type == pygame.KEYDOWN:
+                    k = event.key
+                    if k == pygame.K_ESCAPE:
+                        return False
+                    elif k == pygame.K_RETURN:
+                        return self.overwrite
+                    elif k == pygame.K_DOWN or k == pygame.K_UP:
+                        self.overwrite = not self.overwrite
+                        self._display_overwrite()
 
     def _center_text(self, text):
         text_render = self.medium_type.render(text, True, self.OFF_WHITE)
@@ -114,15 +146,18 @@ class SaveMenu():
                 if event.type == pygame.KEYDOWN:
                     k = event.key
                     if k == pygame.K_ESCAPE:
-                        return;
+                        return
                     elif k == pygame.K_RETURN:
                         if self.selected in range(self.NUM_SLOTS):
-                            epoch_time = time.time()
-                            timestamp = datetime.datetime.fromtimestamp(epoch_time).strftime("%x    %I:%M:%S %p")
-                            fh = open(self.SAVE_SLOTS[self.selected], 'wb')
-                            self.level.timestamp = timestamp
-                            pickle.dump(self.level, fh)
-                            return
+                            if not os.path.exists(self.SAVE_SLOTS[self.selected]) or self._overwrite():
+                                epoch_time = time.time()
+                                timestamp = datetime.datetime.fromtimestamp(epoch_time).strftime("%x    %I:%M:%S %p")
+                                fh = open(self.SAVE_SLOTS[self.selected], 'wb')
+                                self.level.timestamp = timestamp
+                                pickle.dump(self.level, fh)
+                                return
+                            else:
+                                self._display()
                     elif k == pygame.K_DOWN:
                         self.selected = self.selected + 1
                         if self.selected >= self.NUM_SLOTS:
