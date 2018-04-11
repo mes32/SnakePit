@@ -17,7 +17,7 @@ class Snake(map_entity.MapEntity):
 
     def wander(self, level):
         current_position = self.position
-        p_move = 0.3
+        p_move = 0.9
 
         terrain = level.terrain_map
         player = level.player_map
@@ -29,6 +29,10 @@ class Snake(map_entity.MapEntity):
         move_left = current_position.delta(dx=-1)
         move_right = current_position.delta(dx=1)
         positions = [move_up, move_down, move_left, move_right]
+
+        for p in positions:
+            if not player.is_vacant(p):
+                player.entity_at(p).hit(1, 0.5)
 
         if (random.random() <= p_move):
             free_positions = list()

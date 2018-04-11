@@ -1,3 +1,4 @@
+import random
 import pygame
 
 import map_entity
@@ -38,6 +39,12 @@ class PlayerCharacter(map_entity.MapEntity):
             return True
         else:
             return False
+
+    def hit(self, damage, p_hit):
+        if (random.random() <= p_hit):
+            self.current_hp = self.current_hp - damage
+            if self.current_hp < 0:
+                self.current_hp = 0
 
     def attack(self, enemy):
         damage = 1
