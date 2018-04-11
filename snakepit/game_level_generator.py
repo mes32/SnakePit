@@ -37,7 +37,7 @@ class GameLevelGenerator():
         self._init_items()
 
     def _init_terrain(self):
-        width = self.level.dimensions.get_width()
+        width = self.level.dimensions.width
         height = self.level.dimensions.get_height()
 
         for x in range(0, width):

@@ -8,10 +8,12 @@ from dimensions import Dimensions
 
 class GameLevelView():
 
+    FIELD_OF_VIEW = Dimensions(9, 9)
     DISPLAY_BAR_CELL = Dimensions(20, 20)
     GRID_CELL = Dimensions(64, 64)
-    COLOR_BLACK = 0, 0, 0
-    COLOR_DIM = (255, 0, 0, 128)
+
+    COLOR_BLACK = (0, 0, 0)
+    COLOR_DIM = (0, 0, 0, 200)
 
     player_image = pygame.image.load("./resources/images/PlayerCharacter.png")
     # wall_image = pygame.image.load("./resources/images/Wall.png")
@@ -21,11 +23,13 @@ class GameLevelView():
     display_heart_empty = pygame.image.load("./resources/images/IndicatorHeart_Empty.png")
 
     def __init__(self, field, screen):
-        width = field.dimensions.get_width()
-        height = field.dimensions.get_height()
-        width_pixels = width * self.GRID_CELL.get_width()
-        height_pixels = height * self.GRID_CELL.get_height() + self.DISPLAY_BAR_CELL.get_height()
+        width = self.FIELD_OF_VIEW.width
+        height = self.FIELD_OF_VIEW.height
+
+        width_pixels = width * self.GRID_CELL.width
+        height_pixels = height * self.GRID_CELL.height + self.DISPLAY_BAR_CELL.height
         self.field = field
+        self.player = field.player
         screen = pygame.display.set_mode((width_pixels, height_pixels))
         self.screen = screen
 
@@ -53,8 +57,8 @@ class GameLevelView():
         offset_vertical = self.DISPLAY_BAR_CELL.get_height()
         x = position.get_x()
         y = position.get_y()
-        width = self.GRID_CELL.get_width()
-        height = self.GRID_CELL.get_height()
+        width = self.GRID_CELL.width
+        height = self.GRID_CELL.height
 
         x0 = x * width
         y0 = y * height + offset_vertical
@@ -63,10 +67,25 @@ class GameLevelView():
         return pygame.Rect(x0, y0, x1, y1)
 
     def _draw_at(self, image, position):
-        if image is None:
+        relative_position = self._relative_position(position)
+        if relative_position is None or image is None:
             return
-        rect = self._cell_at(position)
+        rect = self._cell_at(relative_position)
         self.screen.blit(image, rect)
+
+    def _relative_position(self, pos):
+        full_x = self.FIELD_OF_VIEW.width
+        full_y = self.FIELD_OF_VIEW.height
+        half_x = int(self.FIELD_OF_VIEW.width / 2.0)
+        half_y = int(self.FIELD_OF_VIEW.height / 2.0)
+
+        rel_x = (pos.x - self.player.position.x) + half_x
+        rel_y = (pos.y - self.player.position.y) + half_y
+
+        if rel_x < 0 or rel_x >= full_x or rel_y < 0 or rel_y >= full_y:
+            return None
+        else:
+            return position.Position(rel_x, rel_y)
 
     def _render_terrain(self):
         terrain_list = self.field.terrain_map.get_list()
@@ -100,9 +119,9 @@ class GameLevelView():
             self._display_bar(self.display_heart_empty, e + full_hearts, total_hearts)
 
     def _display_bar(self, image, slot, total_slots):
-        height = self.DISPLAY_BAR_CELL.get_height()
-        width = self.DISPLAY_BAR_CELL.get_width()
-        screen_width = self.GRID_CELL.get_width() * self.field.dimensions.get_width()
+        height = self.DISPLAY_BAR_CELL.height
+        width = self.DISPLAY_BAR_CELL.width
+        screen_width = self.GRID_CELL.width * self.FIELD_OF_VIEW.width
         offset_horizontal = 60
         back_slot = total_slots - slot - 1
 
@@ -118,5 +137,5 @@ class GameLevelView():
         width = self.screen.get_width()
         height = self.screen.get_height()
         overlay = pygame.Surface((width, height), pygame.SRCALPHA)
-        overlay.fill((0, 0, 0, 200))
+        overlay.fill(self.COLOR_DIM)
         self.screen.blit(overlay, (0,0))

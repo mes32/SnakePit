@@ -3,7 +3,7 @@ import pygame
 import game_loop
 
 title = "Snake Pit"
-screen_size = width, height = 640, 660
+screen_size = width, height = 576, 596
 
 class Application():
     """

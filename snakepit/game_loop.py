@@ -58,5 +58,7 @@ class GameLoop():
                             player = level.player
                             view.render()
                             continue
+                    else:
+                        continue
                     level.update()
                     view.render()
