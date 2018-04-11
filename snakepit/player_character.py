@@ -42,9 +42,9 @@ class PlayerCharacter(map_entity.MapEntity):
     def attack(self, enemy):
         damage = 1
         enemy.take_damage(damage)
-        self.current_hp = self.current_hp - 1
-        if self.current_hp < 0:
-            self.current_hp = 0
+        # self.current_hp = self.current_hp - 1
+        # if self.current_hp < 0:
+        #     self.current_hp = 0
 
     def pickup(self, item):
         item.consume()

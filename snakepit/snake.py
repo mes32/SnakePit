@@ -24,13 +24,13 @@ class Snake(map_entity.MapEntity):
         creature = level.creature_map
         item = level.item_map
 
-        if (random.random() <= p_move):
-            move_up = current_position.delta(dy=-1)
-            move_down = current_position.delta(dy=1)
-            move_left = current_position.delta(dx=-1)
-            move_right = current_position.delta(dx=1)
-            positions = [move_up, move_down, move_left, move_right]
+        move_up = current_position.delta(dy=-1)
+        move_down = current_position.delta(dy=1)
+        move_left = current_position.delta(dx=-1)
+        move_right = current_position.delta(dx=1)
+        positions = [move_up, move_down, move_left, move_right]
 
+        if (random.random() <= p_move):
             free_positions = list()
             for p in positions:
                 if terrain.is_vacant(p) and player.is_vacant(p) and creature.is_vacant(p) and item.is_vacant(p):
