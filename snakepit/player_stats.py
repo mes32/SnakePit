@@ -6,5 +6,5 @@ class PlayerStats():
     """
 
     def __init__(self):
-        self.current_hp = 3
-        self.total_hp = 3
+        self.current_hp = 10
+        self.total_hp = 10

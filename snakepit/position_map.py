@@ -22,8 +22,15 @@ class PositionMap():
             return self.table[tuple]
 
     def insert(self, position, item):
+        # TODO: This if allows inserting at the same position twice
+        # Eventually should take a closer look at delete() and remove() 
         if not self.is_vacant(position):
-            return
+            entity = self.entity_at(position)
+            self.delete(position)
+            if entity in self.set:
+                self.set.remove(entity)
+            
+        # self.remove(entity)
         tuple = position.get_tuple()
         self.table[tuple] = item
         self.set.add(item)
