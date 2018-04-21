@@ -2,8 +2,6 @@ import dimensions
 import pygame
 import random
 
-import position
-
 class PositionMap():
     """
     A dictionary of all MapEntities inside the GameLevel
@@ -15,7 +13,7 @@ class PositionMap():
         self.set = set()
 
     def entity_at(self, position):
-        tuple = position.get_tuple()
+        tuple = position.tuple
         if not tuple in self.table:
             return None
         else:
@@ -31,14 +29,14 @@ class PositionMap():
                 self.set.remove(entity)
             
         # self.remove(entity)
-        tuple = position.get_tuple()
+        tuple = position.tuple
         self.table[tuple] = item
         self.set.add(item)
 
     def delete(self, position):
         if self.is_vacant(position):
             return False
-        tuple = position.get_tuple()
+        tuple = position.tuple
         del self.table[tuple]
         return True
 

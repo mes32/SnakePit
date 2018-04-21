@@ -2,20 +2,18 @@ import random
 import pygame
 
 import floor
+import map_position
 import snake
-import position
+import stairs_down
 import terrain_map
 import terrain
 import wall
-import stairs_down
 
 from dimensions import Dimensions
 from game_level_view import GameLevelView
 from heart import Heart
 from player_character import PlayerCharacter
-from position import Position
 from position_map import PositionMap
-# from snake import Snake
 
 class GameLevelGenerator():
     """
@@ -63,12 +61,12 @@ class GameLevelGenerator():
 
         for x in range(0, width):
             for y in range(0, height):
-                position = Position(x, y)
+                position = map_position.MapPosition(x, y)
                 new_terrain = wall.Wall(self.level.terrain_map, position)
 
         for x in range(0, width):
             for y in range(0, height):
-                position = Position(x, y)
+                position = map_position.MapPosition(x, y)
                 if x >= x_room and  x < x_room + w_room and y >= y_room and y < y_room + h_room:
                     new_terrain = floor.Floor(self.level.terrain_map, position)
                 # elif x >= x_room + w_room or y >= y_room + h_room:
@@ -92,7 +90,7 @@ class GameLevelGenerator():
 
         # for x in range(x_start, width):
         #     for y in range(y_start, height):
-        #         position = Position(x, y)
+        #         position = map_position.MapPosition(x, y)
         #         new_terrain = terrain.Terrain(self.level.terrain_map, position)
 
         for x in range(0, 100):

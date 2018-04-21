@@ -2,7 +2,7 @@ import pygame
 import random
 
 import game_level_generator
-import position
+# import map_position
 import stairs_down
 import terrain_map
 import terrain
@@ -11,7 +11,6 @@ import wall
 from dimensions import Dimensions
 from heart import Heart
 from player_character import PlayerCharacter
-from position import Position
 from position_map import PositionMap
 from snake import Snake
 
@@ -43,16 +42,8 @@ class GameLevel():
         self._update_enemies()
 
     def rand_vacant(self):
-        max_x = self.dimensions.get_width() - 1
-        max_y = self.dimensions.get_height() - 1
         while True:
-
             test_position = self.terrain_map.rand_vacant()
-            # print(p)
-
-            # x = random.randint(0, max_x)
-            # y = random.randint(0, max_y)
-            # test_position = position.Position(x, y)
             if self.terrain_map.is_vacant(test_position) and self.player_map.is_vacant(test_position) and self.creature_map.is_vacant(test_position):
                 return test_position
 
@@ -65,8 +56,8 @@ class GameLevel():
     def _update_player_character(self):
         player = self.player
         position = player.position
-        dx = player.delta_position.get_x()
-        dy = player.delta_position.get_y()
+        dx = player.delta_position.x
+        dy = player.delta_position.y
         new_position = position.delta(dx, dy)
 
         terrain_map = self.terrain_map

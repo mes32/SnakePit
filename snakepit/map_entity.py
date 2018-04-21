@@ -1,5 +1,3 @@
-import position
-import position_map
 
 class MapEntity():
     """

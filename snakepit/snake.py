@@ -2,8 +2,6 @@ import random
 
 import map_entity
 
-from position import Position
-
 class Snake(map_entity.MapEntity):
     """
     The basic snake enemies.

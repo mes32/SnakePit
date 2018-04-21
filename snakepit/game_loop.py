@@ -8,7 +8,6 @@ import load_menu
 
 from game_over_menu import GameOverMenu
 from player_stats import PlayerStats
-from position import Position
 
 class GameLoop():
     """

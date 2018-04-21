@@ -1,8 +1,9 @@
 import pygame
-import position
+
 import game_level
-import player_character
 import heart
+import map_position
+import player_character
 
 from dimensions import Dimensions
 
@@ -55,8 +56,8 @@ class GameLevelView():
 
     def _cell_at(self, position):
         offset_vertical = self.DISPLAY_BAR_CELL.get_height()
-        x = position.get_x()
-        y = position.get_y()
+        x = position.x
+        y = position.y
         width = self.GRID_CELL.width
         height = self.GRID_CELL.height
 
@@ -85,7 +86,7 @@ class GameLevelView():
         if rel_x < 0 or rel_x >= full_x or rel_y < 0 or rel_y >= full_y:
             return None
         else:
-            return position.Position(rel_x, rel_y)
+            return map_position.MapPosition(rel_x, rel_y)
 
     def _render_terrain(self):
         terrain_list = self.field.terrain_map.get_list()
