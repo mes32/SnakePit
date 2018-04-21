@@ -1,4 +1,3 @@
-import pygame
 
 class Dimensions():
     """
@@ -8,9 +7,3 @@ class Dimensions():
     def __init__(self, width, height):
         self.width = int(width)
         self.height = int(height)
-
-    def get_width(self):
-        return self.width
-
-    def get_height(self):
-        return self.height

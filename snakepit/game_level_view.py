@@ -55,7 +55,7 @@ class GameLevelView():
         pygame.display.flip()
 
     def _cell_at(self, position):
-        offset_vertical = self.DISPLAY_BAR_CELL.get_height()
+        offset_vertical = self.DISPLAY_BAR_CELL.height
         x = position.x
         y = position.y
         width = self.GRID_CELL.width
