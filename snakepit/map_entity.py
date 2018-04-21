@@ -14,4 +14,4 @@ class MapEntity():
         self.position = new_position
 
     def delete(self):
-        self.position_map.remove(self)
+        self.position_map.delete(self.position)

@@ -1,6 +1,3 @@
-import dimensions
-import pygame
-import random
 
 class PositionMap():
     """
@@ -14,39 +11,34 @@ class PositionMap():
 
     def entity_at(self, position):
         tuple = position.tuple
-        if not tuple in self.table:
+        if tuple not in self.table:
             return None
         else:
             return self.table[tuple]
 
-    def insert(self, position, item):
-        # TODO: This if allows inserting at the same position twice
-        # Eventually should take a closer look at delete() and remove() 
-        if not self.is_vacant(position):
-            entity = self.entity_at(position)
-            self.delete(position)
-            if entity in self.set:
-                self.set.remove(entity)
-            
-        # self.remove(entity)
+    def is_vacant(self, position):
+        if self.entity_at(position) == None:
+            return True
+        else:
+            return False
+
+    def insert(self, position, entity):
+        self.delete(position)
         tuple = position.tuple
-        self.table[tuple] = item
-        self.set.add(item)
+        self.table[tuple] = entity
+        self.set.add(entity)
 
     def delete(self, position):
-        if self.is_vacant(position):
-            return False
         tuple = position.tuple
-        del self.table[tuple]
-        return True
-
-    def remove(self, entity):
-        position = entity.position
-        if entity in self.set:
+        entity = self.entity_at(position)
+        if entity is None:
+            return False
+        else:
+            del self.table[tuple]
             self.set.remove(entity)
-            self.delete(position)
+            return True
 
-    def get_list(self):
+    def list(self):
         return list(self.set)
 
     def move(self, position_start, position_end):
@@ -56,9 +48,3 @@ class PositionMap():
         self.delete(position_start)
         self.insert(position_end, entity_to_move)
         return True
-
-    def is_vacant(self, position):
-        if self.entity_at(position) == None:
-            return True
-        else:
-            return False

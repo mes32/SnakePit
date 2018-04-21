@@ -89,18 +89,18 @@ class GameLevelView():
             return map_position.MapPosition(rel_x, rel_y)
 
     def _render_terrain(self):
-        terrain_list = self.field.terrain_map.get_list()
+        terrain_list = self.field.terrain_map.list()
         for terrain in terrain_list:
             self._draw_at(terrain.image, terrain.position)
 
     def _render_items(self):
-        item_list = self.field.item_map.get_list()
+        item_list = self.field.item_map.list()
         for item in item_list:
             if type(item) is heart.Heart:
                 self._draw_at(self.heart_image, item.position)
 
     def _render_enemies(self):
-        enemies = self.field.creature_map.get_list()
+        enemies = self.field.creature_map.list()
         for enemy in enemies:
             self._draw_at(self.snake_image, enemy.position)
 
