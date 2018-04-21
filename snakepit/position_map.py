@@ -1,4 +1,6 @@
 
+import random
+
 class PositionMap():
     """
     A dictionary of all MapEntities inside the GameLevel
@@ -42,9 +44,15 @@ class PositionMap():
         return list(self.set)
 
     def move(self, position_start, position_end):
-        entity_to_move = self.entity_at(position_start)
-        if entity_to_move == None or not self.is_vacant(position_end) or self.is_vacant(position_start):
+        if self.is_vacant(position_start) or not self.is_vacant(position_end):
             return False
-        self.delete(position_start)
-        self.insert(position_end, entity_to_move)
-        return True
+        else:
+            entity = self.entity_at(position_start)
+            self.delete(position_start)
+            self.insert(position_end, entity)
+            return True
+
+    def rand_position(self):
+        my_list = self.list()
+        index = random.randint(0, len(my_list) - 1)
+        return my_list[index].position

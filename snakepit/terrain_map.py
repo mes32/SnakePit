@@ -1,4 +1,3 @@
-import random
 
 import position_map
 
@@ -12,8 +11,3 @@ class TerrainMap(position_map.PositionMap):
             return True
         else:
             return False
-
-    def rand_vacant(self):
-        terrain_list = self.list()
-        index = random.randint(0, len(terrain_list) - 1)
-        return terrain_list[index].position

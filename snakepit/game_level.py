@@ -43,7 +43,7 @@ class GameLevel():
 
     def rand_vacant(self):
         while True:
-            test_position = self.terrain_map.rand_vacant()
+            test_position = self.terrain_map.rand_position()
             if self.terrain_map.is_vacant(test_position) and self.player_map.is_vacant(test_position) and self.creature_map.is_vacant(test_position):
                 return test_position
 
