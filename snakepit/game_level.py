@@ -46,9 +46,13 @@ class GameLevel():
         max_x = self.dimensions.get_width() - 1
         max_y = self.dimensions.get_height() - 1
         while True:
-            x = random.randint(0, max_x)
-            y = random.randint(0, max_y)
-            test_position = position.Position(x, y)
+
+            test_position = self.terrain_map.rand_vacant()
+            # print(p)
+
+            # x = random.randint(0, max_x)
+            # y = random.randint(0, max_y)
+            # test_position = position.Position(x, y)
             if self.terrain_map.is_vacant(test_position) and self.player_map.is_vacant(test_position) and self.creature_map.is_vacant(test_position):
                 return test_position
 
