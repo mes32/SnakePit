@@ -1,25 +1,15 @@
-import pygame
+
 import random
 
 import game_level_generator
-# import map_position
+import heart
+import snake
 import stairs_down
-import terrain_map
-import terrain
-import wall
-
-from dimensions import Dimensions
-from heart import Heart
-from player_character import PlayerCharacter
-from position_map import PositionMap
-from snake import Snake
 
 class GameLevel():
     """
     The current level of the game.
     """
-
-    dimensions = Dimensions(10, 10)
 
     def __init__(self, screen, player_stats):
         self.depth = 1
@@ -41,16 +31,50 @@ class GameLevel():
         self._update_items()
         self._update_enemies()
 
-    def rand_vacant(self):
-        while True:
-            test_position = self.terrain_map.rand_position()
-            if self.terrain_map.is_vacant(test_position) and self.player_map.is_vacant(test_position) and self.creature_map.is_vacant(test_position):
-                return test_position
+    def player_can_walk(self, position):
+        terrain = self.terrain_map
+        creatures = self.creature_map
+        if terrain.is_walkable(position) and creatures.is_vacant(position):
+            return True
+        return False
+
+    def player_can_drop(self, position):
+        terrain = self.terrain_map
+        creatures = self.creature_map
+        items = self.item_map
+        if terrain.is_open(position) and creatures.is_vacant(position) and items.is_vacant(position):
+            return True
+        return False
+
+    def item_can_drop(self, position):
+        terrain = self.terrain_map
+        creatures = self.creature_map
+        items = self.item_map
+        if terrain.is_open(position) and creatures.is_vacant(position) and items.is_vacant(position):
+            return True
+        return False
+
+    def enemy_can_walk(self, position):
+        terrain = self.terrain_map
+        creatures = self.creature_map
+        items = self.item_map
+        if terrain.is_open(position) and creatures.is_vacant(position) and items.is_vacant(position):
+            return True
+        return False
+
+    def enemy_can_drop(self, position):
+        # TODO: Test distance from player
+        terrain = self.terrain_map
+        creatures = self.creature_map
+        items = self.item_map
+        if terrain.is_open(position) and creatures.is_vacant(position) and items.is_vacant(position):
+            return True
+        return False
 
     def _update_items(self):
         item_list = self.item_map.list()
         for item in item_list:
-            if type(item) is Heart and item.is_consumed == True:
+            if type(item) is heart.Heart and item.is_consumed == True:
                 item.delete()
 
     def _update_player_character(self):
@@ -68,10 +92,10 @@ class GameLevel():
         if terrain.is_walkable():
             item = item_map.entity_at(new_position)
             creature = creature_map.entity_at(new_position)
-            if item is not None and type(item) is Heart:
+            if item is not None and type(item) is heart.Heart:
                 player.pickup(item)
                 player.walk()
-            elif creature is not None and type(creature) is Snake:
+            elif creature is not None and type(creature) is snake.Snake:
                 player.attack(creature)
                 player.reset()
             elif type(terrain) is stairs_down.StairsDown:

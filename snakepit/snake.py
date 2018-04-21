@@ -35,7 +35,7 @@ class Snake(map_entity.MapEntity):
         if (random.random() <= p_move):
             free_positions = list()
             for p in positions:
-                if terrain.is_vacant(p) and player.is_vacant(p) and creature.is_vacant(p) and item.is_vacant(p):
+                if level.enemy_can_walk(p):
                     free_positions.append(p)
             
             if len(free_positions) > 0:

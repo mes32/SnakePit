@@ -9,3 +9,4 @@ class Wall(terrain.Terrain):
 
     image = pygame.image.load("./resources/images/Wall.png")
     walkable = False
+    open = False

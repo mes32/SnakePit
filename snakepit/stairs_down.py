@@ -9,3 +9,4 @@ class StairsDown(terrain.Terrain):
 
     image = pygame.image.load("./resources/images/StairsDown.png")
     walkable = True
+    open = False

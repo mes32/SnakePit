@@ -6,8 +6,7 @@ class PositionMap():
     A dictionary of all MapEntities inside the GameLevel
     """
 
-    def __init__(self, dimensions):
-        self.dimensions = dimensions
+    def __init__(self):
         self.table = dict()
         self.set = set()
 

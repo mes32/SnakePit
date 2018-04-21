@@ -9,10 +9,9 @@ class Terrain(map_entity.MapEntity):
 
     image = None
     walkable = True
+    open = True
 
     def __init__(self, position_lookup, position):
-
-        # For now any/all terrain objects are non-traversable walls
         super(Terrain, self).__init__(position_lookup, position)
 
     def is_walkable(self):

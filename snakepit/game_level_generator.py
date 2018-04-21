@@ -20,24 +20,60 @@ class GameLevelGenerator():
     Procedural generator for GameLevel.
     """
 
+    _DROP_COUNT = 40
+
     def __init__(self, level):
         self.level = level
 
-        level.terrain_map = terrain_map.TerrainMap(level.dimensions)
+        level.terrain_map = terrain_map.TerrainMap()
         if level.depth == 1:
-            level.player_map = PositionMap(level.dimensions)
-        level.creature_map = PositionMap(level.dimensions)
-        level.item_map = PositionMap(level.dimensions)
+            level.player_map = PositionMap()
+        level.creature_map = PositionMap()
+        level.item_map = PositionMap()
 
         self._init_terrain()
         if level.depth == 1:
             self._init_player(self.level.initial_player_stats)
         else:
-            position = self.level.rand_vacant()
+            position = self._drop_player()
             self.level.player.move_position(position)
 
         self._init_creatures()
         self._init_items()
+
+    def _drop_stairs(self):
+        terrain = self.level.terrain_map
+        while True:
+            position = terrain.rand_position()
+            if self.level.player_can_walk(position):
+                return position
+
+    def _drop_player(self):
+        terrain = self.level.terrain_map
+        while True:
+            position = terrain.rand_position()
+            if self.level.player_can_drop(position):
+                return position
+
+    def _drop_item(self):
+        count = 0
+        terrain = self.level.terrain_map
+        while count < self._DROP_COUNT:
+            count += 1
+            position = terrain.rand_position()
+            if self.level.item_can_drop(position):
+                return position
+        return None
+
+    def _drop_enemy(self):
+        count = 0
+        terrain = self.level.terrain_map
+        while count < self._DROP_COUNT:
+            count += 1
+            position = terrain.rand_position()
+            if self.level.item_can_drop(position):
+                return position
+        return None
 
     def _init_terrain(self):
         width = 30
@@ -76,7 +112,7 @@ class GameLevelGenerator():
                 # else:
                 #     new_terrain = terrain.Terrain(self.level.terrain_map, position)
 
-        position = self.level.rand_vacant()
+        position = self._drop_stairs()
         new_terrain = stairs_down.StairsDown(self.level.terrain_map, position)
 
     def _carve_room(self):
@@ -102,7 +138,7 @@ class GameLevelGenerator():
                     new_terrain = wall.Wall(self.level.terrain_map, position)
 
     def _init_player(self, player_stats):
-        position = self.level.rand_vacant()
+        position = self._drop_player()
         self.level.player = PlayerCharacter(self.level.player_map, position)
         self.level.player.move_position(position)
         self.level.player.copy_stats(player_stats)
@@ -110,12 +146,18 @@ class GameLevelGenerator():
     def _init_creatures(self):
         num_enemies = self.level.depth
         for e in range(0, num_enemies):
-            position = self.level.rand_vacant()
-            enemy = snake.Snake(self.level.creature_map, position)
+            position = self._drop_enemy()
+            if position is None:
+                print("lvl-%d Unable to find open spot for (enemy)." % self.level.depth)
+            else:
+                enemy = snake.Snake(self.level.creature_map, position)
 
     def _init_items(self):
         item_map = self.level.item_map
         num_items = 2
         for i in range(0, num_items):
-            position = self.level.rand_vacant()
-            item = Heart(item_map, position)
+            position = self._drop_item()
+            if position is None:
+                print("lvl-%d Unable to find open spot for (item)." % self.level.depth)
+            else:
+                item = Heart(item_map, position)
