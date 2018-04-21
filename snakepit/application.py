@@ -1,10 +1,10 @@
 import pygame
+from pygame.locals import *
 
 import game_loop
 import game_level_view
 
 title = "Snake Pit"
-# screen_size = width, height = 576, 596
 
 class Application():
     """
