@@ -1,6 +1,7 @@
 import random
 import pygame
 
+import floor
 import snake
 import position
 import terrain_map
@@ -69,7 +70,7 @@ class GameLevelGenerator():
             for y in range(0, height):
                 position = Position(x, y)
                 if x >= x_room and  x < x_room + w_room and y >= y_room and y < y_room + h_room:
-                    new_terrain = terrain.Terrain(self.level.terrain_map, position)
+                    new_terrain = floor.Floor(self.level.terrain_map, position)
                 # elif x >= x_room + w_room or y >= y_room + h_room:
                 #      new_terrain = wall.Wall(self.level.terrain_map, position)
                 # elif x == 0 or x == width-1 or y == 0 or y == height-1:
