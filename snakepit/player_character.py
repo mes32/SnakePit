@@ -53,6 +53,14 @@ class PlayerCharacter(map_entity.MapEntity):
         # if self.current_hp < 0:
         #     self.current_hp = 0
 
+    def teleport(self, level):
+        terrain = level.terrain_map
+        while True:
+            position = terrain.rand_position()
+            if terrain.is_walkable(position):
+                self.move_position(position)
+                break
+
     def pickup(self, item):
         item.consume()
         self.current_hp = self.current_hp + 1

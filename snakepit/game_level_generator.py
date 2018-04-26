@@ -76,9 +76,10 @@ class GameLevelGenerator():
         return None
 
     def _init_terrain(self):
-        width = 30
+        depth = self.level.depth
+        width = 30 + depth
         # height = self.level.dimensions.get_height()
-        height = 30
+        height = 30 + depth
 
         # for x in range(0, width):
         #     for y in range(0, height):
@@ -90,10 +91,10 @@ class GameLevelGenerator():
 
         # self._carve_room()
 
-        x_room = random.randint(1, 1)
-        y_room = random.randint(1, 1)
-        w_room = random.randint(5, 8)
-        h_room = random.randint(5, 8)
+        x_room = random.randint(1, 10)
+        y_room = random.randint(1, 10)
+        w_room = random.randint(5 + depth, 8 + depth)
+        h_room = random.randint(5 + depth, 8 + depth)
 
         for x in range(0, width):
             for y in range(0, height):

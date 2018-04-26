@@ -46,6 +46,8 @@ class GameLoop():
                         player.plan_walk(x=1)
                     elif event.key == pygame.K_z:
                         player.plan_walk(0, 0)
+                    elif event.key == pygame.K_t:
+                        player.teleport(level)
                     elif event.key == pygame.K_s:
                         save_menu.SaveMenu(screen, view, level)
                     elif event.key == pygame.K_l:
