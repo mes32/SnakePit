@@ -31,6 +31,7 @@ class Snake(map_entity.MapEntity):
         for p in positions:
             if not player.is_vacant(p):
                 player.entity_at(p).hit(1, 0.5)
+                return
 
         if (random.random() <= p_move):
             free_positions = list()
