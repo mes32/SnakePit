@@ -4,16 +4,19 @@ from pygame.locals import *
 import game_loop
 import game_level_view
 
-title = "Snake Pit"
-
 class Application():
     """
     The main application window
     """
 
+    WINDOW_TITLE = "Snake Pit" 
+    ICON_PATH = "./resources/images/WindowIcon.png"
+
     def __init__(self):
         pygame.init()
-        pygame.display.set_caption(title)
+        pygame.display.set_caption(self.WINDOW_TITLE)
+        window_icon = pygame.image.load(self.ICON_PATH)
+        pygame.display.set_icon(window_icon)
 
         fov = game_level_view.GameLevelView.FIELD_OF_VIEW
         cell_dim = game_level_view.GameLevelView.GRID_CELL
