@@ -1,6 +1,6 @@
 # Snake Pit
 
-![Gameplay Example](resources/images/screenshot.png)
+![Gameplay Example](docs/resources/images/screenshot.png)
 
 ## Requirements
 
