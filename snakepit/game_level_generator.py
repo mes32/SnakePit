@@ -24,19 +24,39 @@ class GameLevelGenerator():
 
     def __init__(self, level):
         self.level = level
-
+        depth = level.depth
         level.terrain_map = terrain_map.TerrainMap()
-        if level.depth == 1:
+        if depth == 1:
             level.player_map = PositionMap()
         level.creature_map = PositionMap()
         level.item_map = PositionMap()
 
+        # Level parameters
+        floor_area = 256
+        room_buffer_width = 1 # eventually -> unif(1, 5)
+        room_area = 64
+        # room_area_var = N/A
+        # floor_horizontal_bias = 1
+        # room_horizontal_bias = 1
+        num_rooms = 4
+        # graph_connectivity = N/A
+        heart_spat_period = 64
+        snake_spat_period = 64
+
+        # 1. Create room seeds
+        # 2. Place room seeds
+        # 3. Grow rooms seeds until done
+        # 4. Place stairs
+        # 5. Place snakes
+        # 6. Place hearts
+
         self._init_terrain()
-        if level.depth == 1:
-            self._init_player(self.level.initial_player_stats)
+
+        if depth == 1:
+            self._init_player(level.initial_player_stats)
         else:
             position = self._drop_player()
-            self.level.player.move_position(position)
+            level.player.move_position(position)
 
         self._init_creatures()
         self._init_items()
@@ -76,67 +96,27 @@ class GameLevelGenerator():
         return None
 
     def _init_terrain(self):
-        depth = self.level.depth
-        width = 30 + depth
-        # height = self.level.dimensions.get_height()
-        height = 30 + depth
+        floor_width = 19
+        floor_height = 19
 
-        # for x in range(0, width):
-        #     for y in range(0, height):
-        #         position = Position(x, y)
-        #         # if x == 0 or x == width-1 or y == 0 or y == height-1:
-        #         new_terrain = wall.Wall(self.level.terrain_map, position)
-        #         # else:
-        #         #     new_terrain = terrain.Terrain(self.level.terrain_map, position)
+        x_room = 1
+        y_room = 1
+        w_room = 5
+        h_room = 5
 
-        # self._carve_room()
-
-        x_room = random.randint(1, 10)
-        y_room = random.randint(1, 10)
-        w_room = random.randint(5 + depth, 8 + depth)
-        h_room = random.randint(5 + depth, 8 + depth)
-
-        for x in range(0, width):
-            for y in range(0, height):
+        for x in range(0, floor_width):
+            for y in range(0, floor_height):
                 position = map_position.MapPosition(x, y)
                 new_terrain = wall.Wall(self.level.terrain_map, position)
 
-        for x in range(0, width):
-            for y in range(0, height):
+        for x in range(0, floor_width):
+            for y in range(0, floor_height):
                 position = map_position.MapPosition(x, y)
                 if x >= x_room and  x < x_room + w_room and y >= y_room and y < y_room + h_room:
                     new_terrain = floor.Floor(self.level.terrain_map, position)
-                # elif x >= x_room + w_room or y >= y_room + h_room:
-                #      new_terrain = wall.Wall(self.level.terrain_map, position)
-                # elif x == 0 or x == width-1 or y == 0 or y == height-1:
-                #     new_terrain = wall.Wall(self.level.terrain_map, position)
-                # else:
-                #     new_terrain = terrain.Terrain(self.level.terrain_map, position)
 
         position = self._drop_stairs()
         new_terrain = stairs_down.StairsDown(self.level.terrain_map, position)
-
-    def _carve_room(self):
-        width = random.randint(7, 14) 
-        height = 7
-
-        # x_start = random.randint(1, 50)
-        # y_start = random.randint(1, 50)
-        x_start = 2
-        y_start = 2
-
-        # for x in range(x_start, width):
-        #     for y in range(y_start, height):
-        #         position = map_position.MapPosition(x, y)
-        #         new_terrain = terrain.Terrain(self.level.terrain_map, position)
-
-        for x in range(0, 100):
-            for y in range(0, 100):
-                position = Position(x, y)
-                if x >= 50 and x < 80 and y >= 50 and y < 80:
-                    new_terrain = terrain.Terrain(self.level.terrain_map, position)
-                else:
-                    new_terrain = wall.Wall(self.level.terrain_map, position)
 
     def _init_player(self, player_stats):
         position = self._drop_player()
